@@ -1,0 +1,21 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="selectedJob" style="text-align:center">
+  <div class="selectedName">{{selectedJob.name}}</div>
+  <a *ngIf="!jobStarted && !jobStarting" (click)="premutoRelease()" href="#" class="button">
+    <span>Release!</span>
+  </a>
+  <br>
+  <a *ngIf="jobStarting || jobStarted" href="#" class="button disabled">
+      <span *ngIf="jobStarting && !jobStarted">Starting...</span>
+      <span *ngIf="!jobStarting && jobStarted">Started</span>
+  </a>
+  <br>
+  <button class="changePipeline" (click)="selectedJob = null">Cambia Pipeline</button>
+</div>
+<div *ngIf="!selectedJob" class="pipelineList">
+    <div class="pipeline" *ngFor="let job of jobs">
+        <button (click)="selected(job)" clss="pipeline">
+          <span class="pipelineName">{{ job.name }}</span>
+        </button>
+      </div>
+</div>
