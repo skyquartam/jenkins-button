@@ -1,6 +1,6 @@
 {
-  "name": "electron-angular-quickstart",
-  "version": "1.2.2",
+  "name": "jenkins-button",
+  "version": "0.0.0",
   "main": "main.js",
   "scripts": {
     "ng": "ng",
@@ -23,12 +23,12 @@
   },
   "build": {
     "asar": true,
-    "productName": "Electron Angular Quickstart 1.2.2",
-    "appId": "com.electron.electron-angular-quickstart",
-    "copyright": "Mark Anthony Ignacio",
+    "productName": "Jenkins Button",
+    "appId": "com.maqix.jenkinsButton",
+    "copyright": "Marcello Quarta",
     "publish": {
       "provider": "s3",
-      "bucket": "com.electron.electron-angular-quickstart",
+      "bucket": "com.maqix.jenkinsButton",
       "path": "/updates"
     },
     "files": [
@@ -39,14 +39,14 @@
       "output": "build"
     },
     "mac": {
-      "category": "public.music.electron-angular-quickstart"
+      "category": "public.music.jenkinsButton"
     },
     "nsis": {
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
       "installerIcon": "./src/assets/images/icon.ico",
       "uninstallerIcon": "./src/assets/images/icon.ico",
-      "uninstallDisplayName": "Electron Angular Quickstart 1.2.2"
+      "uninstallDisplayName": "Jenkins Button"
     },
     "win": {
       "target": [
@@ -55,7 +55,7 @@
       "icon": "./src/assets/images/icon.ico",
       "publish": {
         "provider": "s3",
-        "bucket": "com.electron.electron-angular-quickstart",
+        "bucket": "com.maqix.jenkinsButton",
         "path": "/updates"
       }
     },
@@ -70,7 +70,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mackignacio/electron-angular-quickstart.git"
+    "url": "git@github.com/skyquartam/jenkins-button.git"
   },
   "private": true,
   "dependencies": {
