@@ -4,7 +4,7 @@ import * as url from "url";
 import { execFile } from "child_process";
 
 class ElectronMain {
-  appTitle = "Electron Angular Quickstart";
+  appTitle = "Jenkins Button";
   args: any;
   mainWindow: BrowserWindow;
   secondWindow: BrowserWindow;
@@ -54,34 +54,35 @@ class ElectronMain {
   createMainWindow() {
     this.mainWindow = this.createBrowserWindow();
     this.loadFromFile(this.mainWindow);
-    this.enableDevTools(this.mainWindow);
+    // this.enableDevTools(this.mainWindow);
     this.onWindowClosed(this.mainWindow);
   }
 
-  createSecondWindow() {
-    const secondDisplay = <any>screen.getAllDisplays()[1];
-    if (this.checkSecondDisplay(secondDisplay)) {
-      this.secondWindow = this.createBrowserWindow(secondDisplay.bounds.x, secondDisplay.bounds.y);
-    }
-    this.loadFromFile(this.secondWindow, "/second-window");
-    this.enableDevTools(this.secondWindow);
-    this.onWindowClosed(this.secondWindow);
-  }
+  // createSecondWindow() {
+  //   const secondDisplay = <any>screen.getAllDisplays()[1];
+  //   if (this.checkSecondDisplay(secondDisplay)) {
+  //     this.secondWindow = this.createBrowserWindow(secondDisplay.bounds.x, secondDisplay.bounds.y);
+  //   }
+  //   this.loadFromFile(this.secondWindow, "/second-window");
+  //   this.enableDevTools(this.secondWindow);
+  //   this.onWindowClosed(this.secondWindow);
+  // }
 
   checkSecondDisplay(secondDisplay: any): boolean {
     return secondDisplay && secondDisplay !== undefined && secondDisplay !== null;
   }
 
-  createBrowserWindow(x = 0, y = 0): BrowserWindow {
+  createBrowserWindow(): BrowserWindow {
     return new BrowserWindow({
       title: this.appTitle,
-      fullscreen: true,
+      width: 530,
+      height: 320,
+      fullscreen: false,
       minimizable: false,
       maximizable: false,
       autoHideMenuBar: true,
-      closable: false,
-      x: x,
-      y: y,
+      closable: true,
+      center: true
     });
   }
 
@@ -115,7 +116,7 @@ class ElectronMain {
     }
 
     if (this.secondWindow === null) {
-      this.createSecondWindow();
+      // this.createSecondWindow();
     }
   }
 
