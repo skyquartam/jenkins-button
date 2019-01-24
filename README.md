@@ -47,3 +47,6 @@ npm start
 ```
 npm run dist
 ```
+
+You can find the builds inside the /build/*platform* directory
+

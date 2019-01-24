@@ -81,6 +81,7 @@ class ElectronMain {
       minimizable: false,
       maximizable: false,
       autoHideMenuBar: true,
+      resizable: false,
       closable: true,
       center: true
     });
