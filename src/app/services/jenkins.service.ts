@@ -11,7 +11,7 @@ export interface JenkinsJob {
 @Injectable({
   providedIn: "root"
 })
-export class JenkinsServiceService {
+export class JenkinsService {
 
   readonly SVIL_JOB_NAME = "ita-wcmsaem-6.0-skysporthd(build-sonar)";
   readonly JENKINS_TOKEN = "110a2b74cacdf5c0c0970565221eae06";
@@ -27,7 +27,6 @@ export class JenkinsServiceService {
   }
 
   build(url: string): Observable<void> {
-    // this.http.post(`http://quartam:${this.API_TOKEN}@svilmiwcmsapp01.sky.local/jenkins/view/Sport/job/ita-wcmsaem-6.0-skysporthd(build-sonar)/build?token=${this.API_TOKEN}`, {}, {
     return this.http.post<void>(`${url}/build?token=${this.API_TOKEN}`, {}, {
       headers: {
         // "Jenkins-Crumb": this.JENKINS_TOKEN,

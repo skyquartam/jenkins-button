@@ -8,10 +8,6 @@ const routes: Routes = [
   {
     path: "",
     component: HomeComponent
-  },
-  {
-    path: "second-window",
-    component: SecondWindowComponent
   }
 ];
 

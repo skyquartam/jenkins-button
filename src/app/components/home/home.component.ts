@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { JenkinsServiceService, JenkinsJob } from "src/app/services/jenkins-service.service";
+import { JenkinsService, JenkinsJob } from "src/app/services/jenkins.service";
+import { ElectronService } from 'src/app/services/electron.service';
 
 @Component({
   selector: "app-home",
@@ -14,10 +15,11 @@ export class HomeComponent implements OnInit {
   jobStarted = false;
   jobStarting = false;
 
-  constructor(private jenkinsService: JenkinsServiceService) {
+  constructor(private jenkinsService: JenkinsService, private electronService: ElectronService) {
     this.audio = new Audio();
     this.audio.src = "./assets/leeroy.mp3";
     this.audio.load();
+
   }
 
   ngOnInit() {
@@ -39,6 +41,8 @@ export class HomeComponent implements OnInit {
 
   selected(job: JenkinsJob) {
     this.selectedJob = job;
+    this.jobStarted = false;
+    this.jobStarting = false;
   }
 
   changePipeline() {

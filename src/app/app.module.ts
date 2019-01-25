@@ -10,10 +10,10 @@ import { ElectronService } from "./services/electron.service";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./components/home/home.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { SecondWindowComponent } from "./components/second-window/second-window.component";
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, SecondWindowComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent],
   imports: [AppRoutingModule, HttpClientModule, BrowserModule, BrowserAnimationsModule],
   providers: [ElectronService],
   bootstrap: [AppComponent]
