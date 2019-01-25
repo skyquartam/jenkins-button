@@ -1,3 +1,20 @@
-<p>
-  login works!
-</p>
+<div class="login">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Jenkins Button</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password"></ion-input>
+      </ion-item>
+    </ion-card-content>
+      <ion-button (click)="premutoLogin()" expand="full">Login</ion-button>
+  </ion-card>
+</div>
+

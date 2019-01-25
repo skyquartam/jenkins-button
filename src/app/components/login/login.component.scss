@@ -1,0 +1,31 @@
+ion-button {
+  margin: 0 auto;
+  height: 50px;
+  --background: transparent;
+  --box-shadow: none;
+}
+
+ion-card-title {
+  text-align: center;
+  color: white;
+  font-size: 2.4em;
+}
+
+ion-card {
+  background: linear-gradient(to right, #d38312, #a83279);
+}
+
+ion-item {
+  --background: transparent;
+}
+
+ion-input {
+  --color: white;
+  input {
+    border-color: white;
+  }
+}
+
+ion-label {
+  --color: white !important;
+}
