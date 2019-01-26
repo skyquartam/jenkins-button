@@ -1,11 +1,21 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import {map, tap} from "rxjs/operators";
+import {map, tap, concatMap} from "rxjs/operators";
 
 export interface JenkinsJob {
   name: string;
   url: string;
+}
+
+export interface Credentials {
+  username: string;
+  password: string;
+}
+
+export interface CrumbResponse {
+  crumb: string;
+  crumbRequestField: string
 }
 
 @Injectable({
@@ -13,12 +23,12 @@ export interface JenkinsJob {
 })
 export class JenkinsService {
 
-  jobs: JenkinsJob[];
+  private credentials: Credentials;
+  public jobs: JenkinsJob[];
 
   readonly SVIL_JOB_NAME = "ita-wcmsaem-6.0-skysporthd(build-sonar)";
   readonly JENKINS_TOKEN = "110a2b74cacdf5c0c0970565221eae06";
   readonly API_TOKEN = "8a5ab3bd655d4155061c0973882e9ff6";
-  jenkins: any;
 
   constructor(private http: HttpClient) {}
 
@@ -36,5 +46,35 @@ export class JenkinsService {
         Authorization: "Basic " + btoa("quartam:" + this.API_TOKEN)
       }
     });
+  }
+
+  loadJobsWithCredentials(credentials: Credentials): Observable<JenkinsJob[]> {
+    return this.getJenkinsCrumb(credentials).pipe(
+      concatMap(crumbResponse => this.http.get<{jobs: JenkinsJob[]}>(`http://svilmiwcmsapp01.sky.local/jenkins/view/Sport/api/json`, this.getAuthHeaders(credentials, crumbResponse))),
+      map(jobResponse => jobResponse.jobs),
+      tap(jobs => this.jobs = jobs)
+    )
+  }
+
+  buildJob(url: string): Observable<void> {
+    return this.getJenkinsCrumb(this.credentials).pipe(
+      concatMap(crumbResponse => this.http.post<void>(`${url}/build`, this.getAuthHeaders(this.credentials, crumbResponse))),
+    )
+  }
+
+  private getJenkinsCrumb(credentials: Credentials): Observable<CrumbResponse> {
+    return this.http.get<CrumbResponse>(`http://svilmiwcmsapp01.sky.local/jenkins/crumbIssuer/api/json`, this.getAuthHeaders(credentials));
+  }
+
+  private getAuthHeaders(credentials: Credentials, crumbData?: CrumbResponse): {headers: {Authorization: string}} {
+    const authObj = {
+      Authorization: "Basic " + btoa(`${credentials.username}:${credentials.password}`)
+    };
+    if (crumbData != null) {
+      authObj[crumbData.crumbRequestField] = crumbData.crumb;
+    }
+    return {
+      headers: authObj
+    };
   }
 }
