@@ -11,6 +11,7 @@ import {map} from "rxjs/operators";
 export class ReleaserComponent implements OnInit {
   selectedJob: JenkinsJob;
   private audio: HTMLAudioElement;
+  releasingStatus: "quiet" | "releasing" | "released" = "quiet";
 
   constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router) {
     this.activatedRoute.paramMap.pipe(
@@ -21,6 +22,7 @@ export class ReleaserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.releasingStatus = "quiet";
   }
 
   loadAudio() {
@@ -34,10 +36,24 @@ export class ReleaserComponent implements OnInit {
   }
 
   premutoRelease() {
-    this.jenkinsService.buildJob(this.selectedJob.url).subscribe(() => {
-      console.log("Completed")
-    }, (e) => {
-      console.log(e);
-    });
+    if (this.releasingStatus != "quiet") {
+      console.log(`Job already starting/started`);
+      return
+    }
+    this.releasingStatus = "releasing";
+    this.audio.play();
+    new Promise(resolve => {
+      setTimeout(() =>{
+        this.releasingStatus = "released";
+         resolve()
+      }, 2000)
+    }).then(() => {
+      console.log("Completed!")
+    })
+    // this.jenkinsService.buildJob(this.selectedJob.url).subscribe(() => {
+    //   console.log("Completed")
+    // }, (e) => {
+    //   console.log(e);
+    // });
   }
 }

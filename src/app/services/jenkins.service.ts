@@ -55,7 +55,7 @@ export class JenkinsService {
 
   buildJob(url: string): Observable<void> {
     return this.getJenkinsCrumb(this.credentials).pipe(
-      concatMap(crumbResponse => this.http.post<void>(`${url}/build`, this.getAuthHeaders(this.credentials, crumbResponse))),
+      concatMap(crumbResponse => this.http.post<void>(`${url}/build`, {}, this.getAuthHeaders(this.credentials, crumbResponse))),
     )
   }
 
@@ -70,6 +70,7 @@ export class JenkinsService {
     if (crumbData != null) {
       authObj[crumbData.crumbRequestField] = crumbData.crumb;
     }
+    console.log(authObj);
     return {
       headers: authObj
     };
