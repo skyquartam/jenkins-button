@@ -23,20 +23,20 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.jenkinsService.getPipelines().subscribe(jobs => {
-      this.jobs = jobs;
-    });
+    // this.jenkinsService.getPipelines().subscribe(jobs => {
+    //   this.jobs = jobs;
+    // });
   }
 
   premutoRelease() {
     this.jobStarting = true;
     this.audio.play();
-    this.jenkinsService.build(this.selectedJob.url).subscribe(() => {
-      this.jobStarting = false;
-      this.jobStarted = true;
-    }, (err) => {
-      console.log(err);
-    });
+    // this.jenkinsService.build(this.selectedJob.url).subscribe(() => {
+    //   this.jobStarting = false;
+    //   this.jobStarted = true;
+    // }, (err) => {
+    //   console.log(err);
+    // });
   }
 
   selected(job: JenkinsJob) {

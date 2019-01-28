@@ -1,8 +1,9 @@
 ion-button {
   margin: 0 auto;
-  height: 50px;
+  height: 360px;
   --background: transparent;
   --box-shadow: none;
+  font-size: 2em;
 }
 
 ion-card-title {
@@ -21,6 +22,7 @@ ion-item {
 
 ion-input {
   --color: white;
+
   input {
     border-color: white;
   }
@@ -28,4 +30,8 @@ ion-input {
 
 ion-label {
   --color: white !important;
+}
+
+ion-card {
+  height: 585px;
 }

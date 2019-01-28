@@ -12,9 +12,11 @@ export class JobsComponent implements OnInit {
   jobs: JenkinsJob[] = [];
 
   constructor(private jenkinsService: JenkinsService, private router: Router) {
-    this.jenkinsService.getPipelines().subscribe(jobs => {
-      this.jobs = jobs;
-    });
+    this.jobs = this.jenkinsService.jobs;
+    if (this.jobs.length == 0) {
+      console.log(`Cannot get list of jobs... logging out`)
+      this.premutoLogout();
+    }
   }
 
   ngOnInit() {
@@ -22,5 +24,9 @@ export class JobsComponent implements OnInit {
 
   premutoJob(job: JenkinsJob) {
     this.router.navigate(["jobs", job.name])
+  }
+
+  premutoLogout() {
+    this.router.navigate([""])
   }
 }

@@ -1,2 +1,20 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{selectedJob.name}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-button (click)="premutoBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-button (click)="premutoBack()">{{job?.name}}</ion-button>
+  <ion-content>
+    <div style="text-align:center">
+      <a (click)="premutoRelease()" href="#" class="button">
+        <span>Release!</span>
+      </a>
+    </div>
+  </ion-content>
+</ion-app>
