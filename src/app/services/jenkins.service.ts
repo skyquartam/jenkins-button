@@ -6,6 +6,7 @@ import {map, tap, concatMap} from "rxjs/operators";
 export interface JenkinsJob {
   name: string;
   url: string;
+  color: string;
 }
 
 export interface Credentials {
@@ -27,22 +28,6 @@ export class JenkinsService {
   public jobs: JenkinsJob[] = [];
 
   constructor(private http: HttpClient) {}
-
-  // getPipelines(): Observable<JenkinsJob[]> {
-  //   return this.http.get<{jobs: JenkinsJob[]}>(`http://quartam:${this.API_TOKEN}@svilmiwcmsapp01.sky.local/jenkins/view/Sport/api/json`).pipe(
-  //     map( res => res.jobs),
-  //     tap(jobs => this.jobs = jobs)
-  //   );
-  // }
-  //
-  // build(url: string): Observable<void> {
-  //   return this.http.post<void>(`${url}/build?token=${this.API_TOKEN}`, {}, {
-  //     headers: {
-  //       // "Jenkins-Crumb": this.JENKINS_TOKEN,
-  //       Authorization: "Basic " + btoa("quartam:" + this.API_TOKEN)
-  //     }
-  //   });
-  // }
 
   loadJobsWithCredentials(credentials: Credentials): Observable<JenkinsJob[]> {
     this.credentials = credentials
@@ -70,7 +55,6 @@ export class JenkinsService {
     if (crumbData != null) {
       authObj[crumbData.crumbRequestField] = crumbData.crumb;
     }
-    console.log(authObj);
     return {
       headers: authObj
     };

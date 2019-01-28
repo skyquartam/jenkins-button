@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {Credentials, JenkinsService} from "../../services/jenkins.service";
 import {AlertController, LoadingController, ModalController} from "@ionic/angular";
 import {HttpErrorResponse} from "@angular/common/http";
+import {StorageService} from "../../services/storage.service";
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,12 @@ export class LoginComponent implements OnInit {
     password: ""
   };
 
-  constructor(private router: Router, private jenkinsService: JenkinsService, private alertController: AlertController, private loadingController: LoadingController) {
+  constructor(private router: Router, private jenkinsService: JenkinsService, private alertController: AlertController, private loadingController: LoadingController, private storageService: StorageService) {
+
   }
 
   ngOnInit() {
+    this.setCredentials()
   }
 
   async premutoLogin() {
@@ -29,6 +32,7 @@ export class LoginComponent implements OnInit {
     this.jenkinsService.loadJobsWithCredentials(this.credentials).subscribe(
       async () => {
         await loader.dismiss();
+        this.storageService.setCredentials(this.credentials);
         this.router.navigate(["jobs"]);
       },
       async (e: HttpErrorResponse) => {
@@ -49,5 +53,12 @@ export class LoginComponent implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  async setCredentials() {
+     const credentials = await this.storageService.getCredentials();
+     if (credentials != null) {
+       this.credentials = credentials;
+     }
   }
 }

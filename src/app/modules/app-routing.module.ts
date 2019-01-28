@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from "@angular/router";
 
-import {HomeComponent} from "../components/home/home.component";
 import {LoginComponent} from "../components/login/login.component";
 import {JobsComponent} from "../components/jobs/jobs.component";
 import {ReleaserComponent} from "../components/releaser/releaser.component";
