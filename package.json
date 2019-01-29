@@ -36,10 +36,12 @@
       "dist"
     ],
     "directories": {
-      "output": "build"
+      "output": "build",
+      "buildResources": "buildResources"
     },
     "mac": {
-      "category": "public.music.jenkinsButton"
+      "category": "public.music.jenkinsButton",
+      "icon": "buildResources/icon.icns"
     },
     "nsis": {
       "createDesktopShortcut": "always",
@@ -52,7 +54,7 @@
       "target": [
         "portable"
       ],
-      "icon": "./src/assets/images/icon.ico",
+      "icon": "buildResources/icon.ico",
       "publish": {
         "provider": "s3",
         "bucket": "com.maqix.jenkinsButton",
