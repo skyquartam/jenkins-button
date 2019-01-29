@@ -75,7 +75,7 @@ class ElectronMain {
   createBrowserWindow(): BrowserWindow {
     return new BrowserWindow({
       title: this.appTitle,
-      width: 470,
+      width: 570,
       height: 630,
       fullscreen: false,
       minimizable: false,

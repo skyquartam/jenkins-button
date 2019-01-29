@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
+import {IJenkinsJob} from "jenkins-api-ts-typings";
 
 @Component({
   selector: 'app-releaser',
@@ -9,7 +10,7 @@ import {map} from "rxjs/operators";
   styleUrls: ['./releaser.component.scss']
 })
 export class ReleaserComponent implements OnInit {
-  selectedJob: JenkinsJob;
+  selectedJob: IJenkinsJob;
   private audio: HTMLAudioElement;
   releasingStatus: "quiet" | "releasing" | "released" = "quiet";
 
@@ -42,18 +43,10 @@ export class ReleaserComponent implements OnInit {
     }
     this.releasingStatus = "releasing";
     this.audio.play();
-    new Promise(resolve => {
-      setTimeout(() =>{
-        this.releasingStatus = "released";
-         resolve()
-      }, 2000)
-    }).then(() => {
-      console.log("Completed!")
-    })
-    // this.jenkinsService.buildJob(this.selectedJob.url).subscribe(() => {
-    //   console.log("Completed")
-    // }, (e) => {
-    //   console.log(e);
-    // });
+    this.jenkinsService.buildJob(this.selectedJob.url).subscribe(() => {
+      this.releasingStatus = "released"
+    }, (e) => {
+      console.log(e);
+    });
   }
 }

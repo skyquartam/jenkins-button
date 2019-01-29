@@ -4,7 +4,7 @@
       <ion-title>Jobs</ion-title>
       <ion-buttons slot="end">
         <ion-button (click)="premutoLogout()">
-          <span>Logout  </span>
+          <span>{{currentUser?.fullName}}</span> &nbsp;
           <ion-icon name="exit"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -13,8 +13,18 @@
 
   <ion-content>
     <ion-list>
-      <ion-item (click)="premutoJob(job)" *ngFor="let job of jobs">
-        {{job.name}}
+      <ion-item (click)="premutoJob(job)" *ngFor="let job of jobs" text-wrap>
+        <ion-thumbnail slot="start">
+          <img [src]="iconForJob(job)">
+          <img [src]="wheatherForJob(job)">
+        </ion-thumbnail>
+        <!--<ion-thumbnail slot="end">-->
+        <!--</ion-thumbnail>-->
+        <ion-label>
+          <h3>{{job.name}}</h3>
+          <p>Avg: {{formatDuration(job.builds[0].estimatedDuration)}}</p>
+          <p>Last ({{job.builds[0].displayName}}): {{formatDuration(job.builds[0].duration)}}</p>
+        </ion-label>
       </ion-item>
     </ion-list>
   </ion-content>

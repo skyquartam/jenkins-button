@@ -10,8 +10,8 @@ export class StorageService {
   constructor(private storage: Storage) {}
 
   public setCredentials(credentials:Credentials) {
-    credentials.password = btoa(credentials.password);
-    return this.storage.set("credentials", credentials)
+    const securedCredentials = {username: credentials.username, password: btoa(credentials.password)};
+    return this.storage.set("credentials", securedCredentials)
   }
 
   public getCredentials() {
