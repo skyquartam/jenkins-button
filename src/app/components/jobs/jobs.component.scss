@@ -1,5 +1,11 @@
-ion-thumbnail {
+ion-thumbnail[slot="start"] {
   width: 32px;
   height: 32px;
   margin-top: -30px
+}
+
+ion-thumbnail[slot="end"] {
+  border-radius: 8px;
+  border: 1px solid darkgray;
+  overflow: hidden;
 }

@@ -65,4 +65,27 @@ export class JobsComponent implements OnInit, OnDestroy {
   formatDuration(duration: number) {
     return (moment.duration(duration, "milliseconds") as any).format("m [min] s[s]")
   }
+
+  logoForJob(job: IJenkinsJob) {
+    if (job.name.includes("sportsdata")) {
+      if (job.name.includes("AWS")) {
+        // AWS logo
+        return "assets/aws_logo.jpg"
+      } else {
+        // build logo
+        return "assets/build_logo.jpg"
+      }
+    } else if (job.name.includes("skysporthd")) {
+      if (job.name.includes("delivery")) {
+        // AEM logo
+        return "assets/aem_logo.jpg"
+      } else if (job.name.includes("motori")) {
+        // f1 logo
+        return "assets/motor_logo.jpg"
+      } else {
+        // build logo
+        return "assets/build_logo.jpg"
+      }
+    }
+  }
 }

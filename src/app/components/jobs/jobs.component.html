@@ -18,8 +18,9 @@
           <img [src]="iconForJob(job)">
           <img [src]="wheatherForJob(job)">
         </ion-thumbnail>
-        <!--<ion-thumbnail slot="end">-->
-        <!--</ion-thumbnail>-->
+        <ion-thumbnail slot="end">
+          <img [src]="logoForJob(job)">
+        </ion-thumbnail>
         <ion-label>
           <h3>{{job.name}}</h3>
           <p>Avg: {{formatDuration(job.builds[0].estimatedDuration)}}</p>

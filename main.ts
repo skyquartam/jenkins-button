@@ -76,12 +76,12 @@ class ElectronMain {
     return new BrowserWindow({
       title: this.appTitle,
       width: 570,
-      height: 630,
+      height: 1030,
       fullscreen: false,
       minimizable: false,
       maximizable: false,
       autoHideMenuBar: true,
-      resizable: false,
+      resizable: true,
       closable: true,
       center: true
     });
