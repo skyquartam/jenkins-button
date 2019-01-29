@@ -12,19 +12,24 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <ion-item (click)="premutoJob(job)" *ngFor="let job of jobs" text-wrap>
+    <ion-segment scrollable>
+      <ion-segment-button [checked]="selectedView && selectedView.name == view.name" (ionSelect)="segmentButtonClicked($event, view)" *ngFor="let view of views">
+        {{view.name}}
+      </ion-segment-button>
+    </ion-segment>
+    <ion-list *ngIf="selectedViewJobs">
+      <ion-item (click)="premutoJob(job)" *ngFor="let job of selectedViewJobs" text-wrap>
         <ion-thumbnail slot="start">
           <img [src]="iconForJob(job)">
-          <img [src]="wheatherForJob(job)">
+          <img *ngIf="job.healthReport.length > 0" [src]="wheatherForJob(job)">
         </ion-thumbnail>
-        <ion-thumbnail slot="end">
+        <ion-thumbnail *ngIf="logoForJob(job)" slot="end">
           <img [src]="logoForJob(job)">
         </ion-thumbnail>
         <ion-label>
           <h3>{{job.name}}</h3>
-          <p>Avg: {{formatDuration(job.builds[0].estimatedDuration)}}</p>
-          <p>Last ({{job.builds[0].displayName}}): {{formatDuration(job.builds[0].duration)}}</p>
+          <p *ngIf="job.builds.length > 0">Avg: {{formatDuration(job.builds[0].estimatedDuration)}}</p>
+          <p *ngIf="job.builds.length > 0">Last ({{job.builds[0].displayName}}): {{formatDuration(job.builds[0].duration)}}</p>
         </ion-label>
       </ion-item>
     </ion-list>

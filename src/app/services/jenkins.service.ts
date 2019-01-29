@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpRequest, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {map, tap, concatMap} from "rxjs/operators";
-import {IJenkinsJob} from "jenkins-api-ts-typings";
+import {map, tap, concatMap, filter} from "rxjs/operators";
+import {IJenkinsJob, IJenkinsView} from "jenkins-api-ts-typings";
 
 export interface JenkinsJob {
   name: string;
@@ -33,7 +33,7 @@ export class JenkinsService {
 
   private credentials: Credentials;
   private currentUser: JenkinsUser;
-  public jobs: IJenkinsJob[] = [];
+  public views: IJenkinsView[] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -43,16 +43,18 @@ export class JenkinsService {
     this.currentUser = null;
   }
 
-  loadJobs(): Observable<IJenkinsJob[]> {
+  loadJobs(): Observable<IJenkinsView[]> {
     return this.loadJobsWithCredentials(this.credentials)
   }
 
-  loadJobsWithCredentials(credentials: Credentials): Observable<IJenkinsJob[]> {
+  loadJobsWithCredentials(credentials: Credentials): Observable<IJenkinsView[]> {
     this.credentials = credentials;
     return this.getJenkinsCrumb(credentials).pipe(
-      concatMap(crumbResponse => this.http.get<{ jobs: IJenkinsJob[] }>(`http://svilmiwcmsapp01.sky.local/jenkins/view/Sport/api/json?depth=2&tree=jobs[name,healthReport[iconUrl],color,builds[estimatedDuration,duration,displayName]{0}]`, this.getAuthHeaders(credentials, crumbResponse))),
-      map(jobResponse => jobResponse.jobs),
-      tap(jobs => this.jobs = jobs)
+      concatMap(crumbResponse => this.http.get<{ views: IJenkinsView[] }>(`http://svilmiwcmsapp01.sky.local/jenkins/api/json?depth=2&tree=views[name,url,jobs[name,healthReport[iconUrl],color,builds[estimatedDuration,displayName,duration]{0}]]`, this.getAuthHeaders(credentials, crumbResponse))),
+      map(viewResponse => viewResponse.views),
+      map( views => views.sort((v1,_) => v1.name == "Sport" ? -1 : undefined)),
+      map( views => views.filter(v => v.name != "6.2")),
+      tap(views => this.views = views)
     )
   }
 

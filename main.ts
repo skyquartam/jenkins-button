@@ -13,9 +13,9 @@ class ElectronMain {
     this.initApp();
     this.initAppEvents();
     this.initIpc();
-    this.execFile("")
-      .then(data => console.log(data))
-      .catch(err => console.log("EXEC_FILE_ERROR:", err));
+    // this.execFile("")
+    //   .then(data => console.log(data))
+    //   .catch(err => console.log("EXEC_FILE_ERROR:", err));
   }
 
   initApp() {
@@ -76,7 +76,7 @@ class ElectronMain {
     return new BrowserWindow({
       title: this.appTitle,
       width: 570,
-      height: 1030,
+      height: 850,
       fullscreen: false,
       minimizable: false,
       maximizable: false,

@@ -17,7 +17,7 @@ export class ReleaserComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router) {
     this.activatedRoute.paramMap.pipe(
       map(params => params.get("jobName")),
-      map(jobName => this.jenkinsService.jobs.filter(j => j.name == jobName)[0])
+      map(jobName => [].concat(...this.jenkinsService.views.map(v => v.jobs)).filter(j => j.name == jobName)[0])
     ).subscribe(job => this.selectedJob = job);
     this.loadAudio()
   }
