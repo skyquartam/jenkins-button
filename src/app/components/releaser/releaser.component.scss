@@ -1,76 +1,57 @@
 .release-button {
-  display: inline-block;
-  margin: 10px;
-  margin-top: 60px;
-  width: 80%;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: 0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
-  -moz-box-shadow: 0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
-  box-shadow: 0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
-  -webkit-transition: -webkit-box-shadow .1s ease-in-out;
-  -moz-transition: -moz-box-shadow .1s ease-in-out;
-  -o-transition: -o-box-shadow .1s ease-in-out;
-  transition: box-shadow .1s ease-in-out;
-  font-size: 50px;
-  color: #fff;
-  padding: 0;
+  box-sizing: border-box;
+  width: 338px;
+  height: 395px;
+  cursor: pointer;
+  font-size: 3em;
+  top: 0;
+  border: 1px solid #B21522;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  white-space: pre;
+  background: red no-repeat 0 100%;
+  background-size: 158px 142px;
+  box-shadow: 1px 16px 10px 5px rgba(0, 0, 0, 0.2), 0 32px 0 0 #000000, 4px 8px 15px 4px rgba(0, 0, 0, 0.4), 5px 1px 5px 0 rgba(255, 255, 255, 0.2) inset, 5px -4px 5px 0 rgba(255, 255, 255, 0.2) inset, -2px 3px 6px 0 rgba(0, 0, 0, 0.2) inset;
+  text-shadow: 0 -1px 0 rgba(40, 40, 40, 0.6);
+  transition: all 40ms 0 cubic-bezier(0.6, -0.28, 0.735, 0.04);
+  transform: rotateX(35deg) scaleX(1) scaleY(1) scaleZ(1) translateY(15px) translateZ(40px);
+  outline: none;
 }
 
-.release-button span {
-  display: inline-block;
-  padding: 20px 30px;
-  background-color: #ec528d;
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(hsla(338, 90%, 80%, .8)), to(hsla(338, 90%, 70%, .2)));
-  background-image: -webkit-linear-gradient(hsla(338, 90%, 80%, .8), hsla(338, 90%, 70%, .2));
-  background-image: -moz-linear-gradient(hsla(338, 90%, 80%, .8), hsla(338, 90%, 70%, .2));
-  background-image: -o-linear-gradient(hsla(338, 90%, 80%, .8), hsla(338, 90%, 70%, .2));
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
-  -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
-  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
-  font-family: 'Pacifico', Arial, sans-serif;
-  line-height: 1;
-  text-shadow: 0 -1px 1px rgba(175, 49, 95, .7);
-  -webkit-transition: background-color .2s ease-in-out, -webkit-transform .1s ease-in-out;
-  -moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
-  -o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
-  transition: background-color .2s ease-in-out, transform .1s ease-in-out;
-  width: 100%;
+.release-button:hover {
+  background: #ff6462;
+  box-shadow: 1px 16px 10px 5px rgba(0, 0, 0, 0.2), 0 32px 0 0 #000000, 4px 8px 15px 4px rgba(0, 0, 0, 0.4), 5px 1px 5px 0 rgba(255, 255, 255, 0.2) inset, 5px -4px 5px 0 rgba(255, 255, 255, 0.2) inset, -2px 2px 6px 0 rgba(0, 0, 0, 0.2) inset;
 }
 
-.release-button:hover span {
-  background-color: #ec6a9c;
-  text-shadow: 0 -1px 1px rgba(175, 49, 95, .9), 0 0 5px rgba(255, 255, 255, .8);
-}
-
-.release-button:active, .release-button:focus {
-  -webkit-box-shadow: 0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
-  -moz-box-shadow: 0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
-  box-shadow: 0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
-}
-
-.release-button:active span {
-  -webkit-transform: translate(0, 4px);
-  -moz-transform: translate(0, 4px);
-  -o-transform: translate(0, 4px);
-  transform: translate(0, 4px);
+.release-button:active {
+  position: relative;
+  top: 6px;
+  background: red;
+  box-shadow: 1px 5px 8px 4px rgba(0, 0, 0, 0.4), 0 7px 0 0 #000000, 1px 2px 1px 1px rgba(0, 0, 0, 0.6), 3px 1px 5px 0 rgba(255, 255, 255, 0.2) inset, 3px -6px 5px 0 rgba(255, 255, 255, 0.2) inset, -1px 1px 4px 0 rgba(0, 0, 0, 0.2) inset;
 }
 
 .release-button.releasing {
-  box-shadow: none;
-
-  span {
-    background: dimgrey;
-  }
+  background: dimgrey;
 }
 
 .release-button.released {
-  box-shadow: none;
-  span {
-    background: #0c9028;
+  background: #0c9028;
+}
+
+div.hero {
+  width: 100%;
+  height: 200px;
+  background-image: linear-gradient(
+      to bottom, rgba(0, 0, 0, 0.28), white
+  ), url("https://www.joshmorony.com/media/2017/05/Screenshot-2017-05-25-16.46.02.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  h1 {
+    margin: 0;
+    text-align: center;
+    color: white;
+    padding-top: 18px;
   }
 }

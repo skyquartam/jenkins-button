@@ -79,7 +79,7 @@ export class JenkinsService {
       return of(this.currentUser);
     } else {
       return this.storageService.getCredentialsObs().pipe(
-        concatMap(credentials => this.http.get<JenkinsUser>(`${this.baseUrl}/user/${this.credentials.username}/api/json`, this.getAuthHeaders(credentials))),
+        concatMap(credentials => this.http.get<JenkinsUser>(`${this.baseUrl}/user/${credentials.username}/api/json`, this.getAuthHeaders(credentials))),
         tap(u => this.currentUser = u)
       );
     }
