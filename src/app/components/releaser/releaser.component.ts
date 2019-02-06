@@ -3,7 +3,7 @@ import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {concatMap, filter, map} from "rxjs/operators";
 import {IJenkinsJob} from "jenkins-api-ts-typings";
-import {AlertController} from "@ionic/angular";
+import {AlertController, LoadingController} from "@ionic/angular";
 
 @Component({
   selector: "app-releaser",
@@ -15,12 +15,23 @@ export class ReleaserComponent implements OnInit {
   private audio: HTMLAudioElement;
   releasingStatus: "quiet" | "releasing" | "released" = "quiet";
 
-  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController) {
+  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController, private loadingController: LoadingController) {
+    this.loadJob();
+    this.loadAudio();
+  }
+
+  async loadJob() {
+    const loading = await this.loadingController.create({
+      message: "Caricamento Job..."
+    });
+    await loading.present();
     this.activatedRoute.paramMap.pipe(
       map(params => params.get("jobName")),
       concatMap(jobName => this.jenkinsService.loadJob(jobName))
-    ).subscribe(job => this.selectedJob = job);
-    this.loadAudio();
+    ).subscribe(async job => {
+      this.selectedJob = job;
+      await loading.dismiss();
+    });
   }
 
   ngOnInit() {

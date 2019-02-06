@@ -47,7 +47,7 @@
           <img *ngIf="job.healthReport.length > 0" [src]="wheatherForJob(job)">
         </ion-thumbnail>
         <ion-thumbnail class="bordered" *ngIf="logoForJob(job)" slot="end">
-          <img [src]="logoForJob(job)">
+          <img [src]="logoForJob(job)" (error)="setDefaultLogo($event)">
         </ion-thumbnail>
         <ion-label>
           <h3>{{job.name}}</h3>

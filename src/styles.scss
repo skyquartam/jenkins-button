@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
-
 @keyframes placeHolderShimmer {
   0% {
     background-position: -468px 0;
@@ -26,3 +23,45 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
   position: relative;
   overflow: hidden;
 }
+
+@import url('https://fonts.googleapis.com/css?family=Anton');
+
+
+@font-face {
+  font-family: 'SkyFont';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./assets/SkyFont/Sky_Reg.ttf');
+}
+
+@font-face {
+  font-family: 'SkyFont';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./assets/SkyFont/Sky_Bold.ttf');
+}
+
+@font-face {
+  font-family: 'SkyFont';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./assets/SkyFont/Sky_Italic.ttf');
+}
+
+@font-face {
+  font-family: 'SkyFont';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./assets/SkyFont/Sky_Bold.ttf');
+}
+
+:root,
+:root[mode=ios],
+:root[mode=md] {
+  --ion-font-family: "SkyFont", "Times New Roman", serif !important;
+
+  font-family: "SkyFont", "Times New Roman", serif !important;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'SkyFont', sans-serif; }

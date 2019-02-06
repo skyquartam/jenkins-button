@@ -51,11 +51,11 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   iconForJob(job: IJenkinsJob) {
     const extension = job.color.includes("anime") ? "gif" : "png";
-    return `http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/${job.color}.${extension}`;
+    return `${this.jenkinsService.imagePath}${job.color}.${extension}`;
   }
 
   wheatherForJob(job: IJenkinsJob) {
-    return `http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/${job.healthReport[0].iconUrl}`;
+    return `${this.jenkinsService.imagePath}${job.healthReport[0].iconUrl}`;
   }
 
   formatDuration(duration: number) {
@@ -83,6 +83,11 @@ export class JobsComponent implements OnInit, OnDestroy {
         return "assets/ss_logo.png";
       }
     }
+  }
+
+  setDefaultLogo(event: ErrorEvent) {
+    let imageElement = event.target as HTMLImageElement
+    imageElement.src = "assets/build_logo.jpg";
   }
 
   segmentButtonClicked($event, view: IJenkinsView) {

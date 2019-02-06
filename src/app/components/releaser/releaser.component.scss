@@ -17,6 +17,7 @@
   transition: all 40ms 0 cubic-bezier(0.6, -0.28, 0.735, 0.04);
   transform: rotateX(35deg) scaleX(1) scaleY(1) scaleZ(1) translateY(15px) translateZ(40px);
   outline: none;
+  font-family: 'Anton';
 }
 
 .release-button:hover {
@@ -39,19 +40,17 @@
   background: #0c9028;
 }
 
-div.hero {
+ion-content {
   width: 100%;
   height: 200px;
   background-image: linear-gradient(
-      to bottom, rgba(0, 0, 0, 0.28), white
-  ), url("https://www.joshmorony.com/media/2017/05/Screenshot-2017-05-25-16.46.02.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  h1 {
-    margin: 0;
-    text-align: center;
-    color: white;
-    padding-top: 18px;
-  }
+      to top, rgba(255, 255, 255, 0.705), white
+  ), url("../../../assets/images/pattern.png");
+  background-repeat: repeat;
 }
+    h1 {
+      margin: 0;
+      text-align: center;
+      color: white;
+      padding-top: 18px;
+    }
