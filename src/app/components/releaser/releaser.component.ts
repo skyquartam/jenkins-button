@@ -1,26 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {map} from "rxjs/operators";
+import {concatMap, filter, map} from "rxjs/operators";
 import {IJenkinsJob} from "jenkins-api-ts-typings";
 import {AlertController} from "@ionic/angular";
 
 @Component({
-  selector: 'app-releaser',
-  templateUrl: './releaser.component.html',
-  styleUrls: ['./releaser.component.scss']
+  selector: "app-releaser",
+  templateUrl: "./releaser.component.html",
+  styleUrls: ["./releaser.component.scss"]
 })
 export class ReleaserComponent implements OnInit {
   selectedJob: IJenkinsJob;
   private audio: HTMLAudioElement;
   releasingStatus: "quiet" | "releasing" | "released" = "quiet";
 
-  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router,  private alertController: AlertController) {
+  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController) {
     this.activatedRoute.paramMap.pipe(
       map(params => params.get("jobName")),
-      map(jobName => [].concat(...this.jenkinsService.views.map(v => v.jobs)).filter(j => j.name == jobName)[0])
+      concatMap(jobName => this.jenkinsService.loadJob(jobName))
     ).subscribe(job => this.selectedJob = job);
-    this.loadAudio()
+    this.loadAudio();
   }
 
   ngOnInit() {
@@ -38,17 +38,17 @@ export class ReleaserComponent implements OnInit {
   }
 
   premutoRelease() {
-    if (this.releasingStatus != "quiet") {
+    if (this.releasingStatus !== "quiet") {
       console.log(`Job already starting/started`);
-      return
+      return;
     }
     this.releasingStatus = "releasing";
     this.audio.play();
     this.jenkinsService.buildJob(this.selectedJob.url).subscribe(() => {
-      this.releasingStatus = "released"
+      this.releasingStatus = "released";
     }, (e) => {
       console.log(e);
-      this.mostraErrore(e.message)
+      this.mostraErrore(e.message);
     });
   }
 
@@ -56,7 +56,7 @@ export class ReleaserComponent implements OnInit {
     const alert = await this.alertController.create({
       header: "Errore",
       message: error,
-      buttons: ['Ok']
+      buttons: ["Ok"]
     });
     await alert.present();
   }

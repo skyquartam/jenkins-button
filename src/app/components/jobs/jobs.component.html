@@ -23,13 +23,30 @@
       <ion-refresher-content>
       </ion-refresher-content>
     </ion-refresher>
-    <ion-list *ngIf="selectedViewJobs">
+    <ion-list *ngIf="selectedViewJobs.length == 0">
+      <ion-item *ngFor="let i of [1,2,3,4,5,6]" text-wrap>
+        <ion-thumbnail slot="start">
+          <div class="linear-background" style="height: 24px; width: 24px; border-radius: 50%;
+     margin: 8px 0;"></div>
+          <div class="linear-background" style="height: 24px; width: 24px; border-radius: 50%;"></div>
+        </ion-thumbnail>
+        <ion-thumbnail slot="end">
+          <div class="linear-background" style="height: 54px; width: 54px; border-radius: 8px;"></div>
+        </ion-thumbnail>
+        <ion-label>
+          <h3 class="linear-background" style="height: 15px; width: 230px; margin: 8px 0;">&nbsp;</h3>
+          <p class="linear-background" style="height: 10px; width: 120px; margin: 4px 0;">&nbsp;</p>
+          <p class="linear-background" style="height: 10px; width: 120px; margin: 4px 0;">&nbsp;</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf="selectedViewJobs.length > 0">
       <ion-item (click)="premutoJob(job)" *ngFor="let job of selectedViewJobs" text-wrap>
         <ion-thumbnail slot="start">
           <img [src]="iconForJob(job)">
           <img *ngIf="job.healthReport.length > 0" [src]="wheatherForJob(job)">
         </ion-thumbnail>
-        <ion-thumbnail *ngIf="logoForJob(job)" slot="end">
+        <ion-thumbnail class="bordered" *ngIf="logoForJob(job)" slot="end">
           <img [src]="logoForJob(job)">
         </ion-thumbnail>
         <ion-label>

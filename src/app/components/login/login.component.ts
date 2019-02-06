@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Credentials, JenkinsService} from "../../services/jenkins.service";
 import {AlertController, LoadingController, ModalController} from "@ionic/angular";
@@ -6,9 +6,9 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {StorageService} from "../../services/storage.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   credentials: Credentials = {
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setCredentials()
+    this.setCredentials();
   }
 
   async premutoLogin() {
@@ -29,10 +29,10 @@ export class LoginComponent implements OnInit {
       message: "Login in corso..."
     });
     await loader.present();
-    this.jenkinsService.loadJobsWithCredentials(this.credentials).subscribe(
-      async () => {
+    this.jenkinsService.loginWithCredentials(this.credentials).subscribe(
+      async (user) => {
+        console.log(`Logged in as ${user.fullName}`);
         await loader.dismiss();
-        this.storageService.setCredentials(this.credentials);
         this.router.navigate(["jobs"]);
       },
       async (e: HttpErrorResponse) => {
@@ -46,19 +46,19 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  async presentError(message: string =`C'è stato un errore durante il login`) {
+  async presentError(message: string = `C'è stato un errore durante il login`) {
     const alert = await this.alertController.create({
-      header: 'Attenzione',
+      header: "Attenzione",
       message,
-      buttons: ['OK']
+      buttons: ["OK"]
     });
     await alert.present();
   }
 
   async setCredentials() {
-     const credentials = await this.storageService.getCredentials();
-     if (credentials != null) {
-       this.credentials = credentials;
-     }
+    const credentials = await this.storageService.getCredentials();
+    if (credentials != null) {
+      this.credentials = credentials;
+    }
   }
 }
