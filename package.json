@@ -2,6 +2,16 @@
   "name": "jenkins-button",
   "version": "0.0.0",
   "main": "main.js",
+  "author": "Marcello Quarta",
+  "description": "A Jenkins Release Button",
+  "homepage": "https://github.com/skyquartam/jenkins-button",
+  "maintainers": [
+    {
+      "name": "Marcello Quarta",
+      "email": "marcello.quarta93@gmail.com",
+      "url": "https://github.com/skyquartam"
+    }
+  ],
   "scripts": {
     "ng": "ng",
     "start": "npm run electron:start",
@@ -19,7 +29,8 @@
     "electron:exit": "taskkill /IM electron.exe /F",
     "electron:watch": "concurrently --kill-others \"npm run electron:tsc \"  \"npm run electron:run\"",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:docker": "docker run --rm -ti --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') --env ELECTRON_CACHE=\"/root/.cache/electron\"  --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\"  -v ${PWD}:/project  -v ${PWD##*/}-node-modules:/project/node_modules  -v ~/.cache/electron:/root/.cache/electron  -v ~/.cache/electron-builder:/root/.cache/electron-builder  electronuserland/builder:wine"
   },
   "build": {
     "asar": true,
@@ -27,9 +38,7 @@
     "appId": "com.maqix.jenkinsButton",
     "copyright": "Marcello Quarta",
     "publish": {
-      "provider": "s3",
-      "bucket": "com.maqix.jenkinsButton",
-      "path": "/updates"
+      "provider": "github"
     },
     "files": [
       "./main.js",
@@ -54,26 +63,20 @@
       "target": [
         "portable"
       ],
-      "icon": "buildResources/icon.ico",
-      "publish": {
-        "provider": "s3",
-        "bucket": "com.maqix.jenkinsButton",
-        "path": "/updates"
-      }
+      "icon": "buildResources/icon.ico"
     },
     "linux": {
       "category": "Music",
       "icon": "./src/assets/images/icon.ico",
       "target": [
-        "AppImage",
-        "deb"
-      ]
+        "deb",
+        "rpm",
+        "apk"
+      ],
+      "maintainer": "Marcello Quarta"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com/skyquartam/jenkins-button.git"
-  },
+  "repository": "github:skyquartam/jenkins-button",
   "private": true,
   "dependencies": {
     "@angular-devkit/schematics-cli": "^0.12.3",

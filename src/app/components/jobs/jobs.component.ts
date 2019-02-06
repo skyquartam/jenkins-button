@@ -51,18 +51,8 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   iconForJob(job: IJenkinsJob) {
-    switch (job.color) {
-      case "blue":
-        return "http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/blue.png";
-      case "disabled":
-        return "http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/disabled.png";
-      case "red":
-        return "http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/red.png";
-      case "blue_anime":
-        return "http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/blue_anime.gif";
-      default:
-        return "http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/disabled.png";
-    }
+    const extension = job.color.includes("anime") ? "gif" : "png";
+    return `http://svilmiwcmsapp01.sky.local/jenkins/static/5c0c56aa/images/32x32/${job.color}.${extension}`;
   }
 
   wheatherForJob(job: IJenkinsJob) {
@@ -99,5 +89,15 @@ export class JobsComponent implements OnInit, OnDestroy {
   segmentButtonClicked($event, view: IJenkinsView) {
     this.selectedView = view;
     this.selectedViewJobs = view.jobs.filter(j => !j.name.includes("TEST"))
+  }
+
+  doRefresh(event: {target: {complete: Function}}) {
+    this.jenkinsService.loadJobs().subscribe(j => {
+      this.views = j
+      event.target.complete();
+    }, (e) => {
+      console.log(e);
+      event.target.complete();
+    })
   }
 }

@@ -50,7 +50,7 @@ export class JenkinsService {
   loadJobsWithCredentials(credentials: Credentials): Observable<IJenkinsView[]> {
     this.credentials = credentials;
     return this.getJenkinsCrumb(credentials).pipe(
-      concatMap(crumbResponse => this.http.get<{ views: IJenkinsView[] }>(`http://svilmiwcmsapp01.sky.local/jenkins/api/json?depth=2&tree=views[name,url,jobs[name,healthReport[iconUrl],color,builds[estimatedDuration,displayName,duration]{0}]]`, this.getAuthHeaders(credentials, crumbResponse))),
+      concatMap(crumbResponse => this.http.get<{ views: IJenkinsView[] }>(`http://svilmiwcmsapp01.sky.local/jenkins/api/json?tree=views[name,url,jobs[name,url,healthReport[iconUrl],color,builds[estimatedDuration,displayName,duration]{0}]]`, this.getAuthHeaders(credentials, crumbResponse))),
       map(viewResponse => viewResponse.views),
       map( views => views.sort((v1,_) => v1.name == "Sport" ? -1 : undefined)),
       map( views => views.filter(v => v.name != "6.2")),
@@ -71,7 +71,7 @@ export class JenkinsService {
 
   buildJob(url: string): Observable<void> {
     return this.getJenkinsCrumb(this.credentials).pipe(
-      concatMap(crumbResponse => this.http.post<void>(`${url}/build`, {}, this.getAuthHeaders(this.credentials, crumbResponse))),
+      concatMap(crumbResponse => this.http.post<void>(`${url}build`, {}, this.getAuthHeaders(this.credentials, crumbResponse))),
     )
   }
 

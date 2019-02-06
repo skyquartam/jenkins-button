@@ -3,6 +3,7 @@ import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
 import {IJenkinsJob} from "jenkins-api-ts-typings";
+import {AlertController} from "@ionic/angular";
 
 @Component({
   selector: 'app-releaser',
@@ -14,7 +15,7 @@ export class ReleaserComponent implements OnInit {
   private audio: HTMLAudioElement;
   releasingStatus: "quiet" | "releasing" | "released" = "quiet";
 
-  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router,  private alertController: AlertController) {
     this.activatedRoute.paramMap.pipe(
       map(params => params.get("jobName")),
       map(jobName => [].concat(...this.jenkinsService.views.map(v => v.jobs)).filter(j => j.name == jobName)[0])
@@ -47,6 +48,16 @@ export class ReleaserComponent implements OnInit {
       this.releasingStatus = "released"
     }, (e) => {
       console.log(e);
+      this.mostraErrore(e.message)
     });
+  }
+
+  async mostraErrore(error: string) {
+    const alert = await this.alertController.create({
+      header: "Errore",
+      message: error,
+      buttons: ['Ok']
+    });
+    await alert.present();
   }
 }

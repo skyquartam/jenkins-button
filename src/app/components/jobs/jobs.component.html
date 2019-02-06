@@ -11,12 +11,18 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-segment scrollable>
+    <ion-segment-button [checked]="selectedView && selectedView.name == view.name"
+                        (ionSelect)="segmentButtonClicked($event, view)" *ngFor="let view of views">
+      {{view.name}}
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-content>
-    <ion-segment scrollable>
-      <ion-segment-button [checked]="selectedView && selectedView.name == view.name" (ionSelect)="segmentButtonClicked($event, view)" *ngFor="let view of views">
-        {{view.name}}
-      </ion-segment-button>
-    </ion-segment>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
     <ion-list *ngIf="selectedViewJobs">
       <ion-item (click)="premutoJob(job)" *ngFor="let job of selectedViewJobs" text-wrap>
         <ion-thumbnail slot="start">
@@ -29,7 +35,8 @@
         <ion-label>
           <h3>{{job.name}}</h3>
           <p *ngIf="job.builds.length > 0">Avg: {{formatDuration(job.builds[0].estimatedDuration)}}</p>
-          <p *ngIf="job.builds.length > 0">Last ({{job.builds[0].displayName}}): {{formatDuration(job.builds[0].duration)}}</p>
+          <p *ngIf="job.builds.length > 0">Last ({{job.builds[0].displayName}}
+            ): {{formatDuration(job.builds[0].duration)}}</p>
         </ion-label>
       </ion-item>
     </ion-list>
