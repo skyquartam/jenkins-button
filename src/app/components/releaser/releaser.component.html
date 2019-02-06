@@ -14,7 +14,7 @@
     <div class="hero">
       <h1>{{selectedJob?.description}}</h1>
     </div>
-    <div style="text-align:center">
+    <div *ngIf="selectedJob" style="text-align:center">
       <button (click)="premutoRelease()" class="release-button" [ngClass]="{releasing: releasingStatus == 'releasing', released: releasingStatus == 'released'}">
         <span *ngIf="releasingStatus=='quiet'">Release!</span>
         <span *ngIf="releasingStatus=='releasing'">Releasing...</span>

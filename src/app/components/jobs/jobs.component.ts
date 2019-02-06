@@ -3,7 +3,7 @@ import {JenkinsJob, JenkinsService, JenkinsUser} from "../../services/jenkins.se
 import {Router} from "@angular/router";
 import {IJenkinsJob, IJenkinsView} from "jenkins-api-ts-typings";
 import * as moment from "moment";
-import {IonSegment} from "@ionic/angular";
+import {IonSegment, AlertController} from "@ionic/angular";
 import {tap} from "rxjs/operators";
 
 @Component({
@@ -20,7 +20,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   private refreshTimer: any;
   @ViewChild(IonSegment) segment: IonSegment;
 
-  constructor(private jenkinsService: JenkinsService, private router: Router, private ngZone: NgZone) {
+  constructor(private jenkinsService: JenkinsService, private router: Router, private ngZone: NgZone, private alertController: AlertController) {
     const momentDurationFormatSetup = require("moment-duration-format"); // needed to load the library
   }
 
@@ -45,8 +45,22 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   async premutoLogout() {
-    await this.jenkinsService.logout();
-    this.router.navigate([""]);
+    const alert = await this.alertController.create({
+      message: 'Vuoi davvero effettuare il logout?',
+      buttons: [
+        {
+          text: "Si",
+          handler: async () => {
+            await alert.dismiss();
+            await this.jenkinsService.logout();
+            this.router.navigate([""]);
+            return false
+          }
+        },
+        "No"
+      ]
+    })
+    await alert.present()
   }
 
   iconForJob(job: IJenkinsJob) {
@@ -90,7 +104,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     imageElement.src = "assets/build_logo.jpg";
   }
 
-  segmentButtonClicked($event, view: IJenkinsView) {
+  segmentButtonClicked(event: Event, view: IJenkinsView) {
     this.selectedView = view;
     this.selectedViewJobs = view.jobs.filter(j => !j.name.includes("TEST"));
   }

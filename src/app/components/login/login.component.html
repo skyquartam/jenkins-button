@@ -1,25 +1,28 @@
-<div class="login">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Sky Jenkins Button</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <form (ngSubmit)="premutoLogin()">
-        <ion-item>
-          <ion-label position="floating">Username</ion-label>
-          <ion-input name="username" [(ngModel)]="credentials.username"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input name="password" [(ngModel)]="credentials.password" type="password"></ion-input>
-        </ion-item>
-      </form>
-    </ion-card-content>
-    <ion-button type="submit" (click)="premutoLogin()" expand="full">
-      <span>Login  </span>
-      <ion-icon name="arrow-round-forward"></ion-icon>
-    </ion-button>
-  </ion-card>
-</div>
-
+<ion-app>
+  <ion-content>
+    <img class="logo" src="assets/images/jenkins-logo.png">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Sky Jenkins Button</ion-card-title>
+      </ion-card-header>
+      
+      
+        <ion-card-content>
+          <form (ngSubmit)="premutoLogin()">
+            <ion-item>
+              <ion-label position="floating">Username</ion-label>
+              <ion-input name="username" [(ngModel)]="credentials.username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input name="password" [(ngModel)]="credentials.password" type="password"></ion-input>
+            </ion-item>
+          </form>
+        </ion-card-content>
+        <ion-button type="submit" (click)="premutoLogin()" expand="full">
+          <span>Login  </span>
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </ion-button>
+      </ion-card>
+  </ion-content>
+</ion-app>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, HostListener} from "@angular/core";
 import {Router} from "@angular/router";
 import {Credentials, JenkinsService} from "../../services/jenkins.service";
 import {AlertController, LoadingController, ModalController} from "@ionic/angular";
@@ -22,6 +22,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.setCredentials();
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.charCode == 13) { // Enter key
+      this.premutoLogin();
+    }
   }
 
   async premutoLogin() {
