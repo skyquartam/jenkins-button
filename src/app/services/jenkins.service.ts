@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpRequest, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Observable, of } from "rxjs";
-import { map, tap, concatMap, filter } from "rxjs/operators";
-import { IJenkinsJob, IJenkinsView } from "jenkins-api-ts-typings";
-import { StorageService } from "./storage.service";
-import { fromPromise } from "rxjs/internal-compatibility";
+import {Injectable} from "@angular/core";
+import {HttpClient, HttpRequest, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Observable, of} from "rxjs";
+import {map, tap, concatMap, filter} from "rxjs/operators";
+import {IJenkinsJob, IJenkinsView} from "jenkins-api-ts-typings";
+import {StorageService} from "./storage.service";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 export interface JenkinsJob {
   name: string;
@@ -35,8 +35,8 @@ export class JenkinsService {
 
   private currentUser: JenkinsUser;
 
-  // baseUrl = "http://svilmiwcmsapp01.sky.local/jenkins";
-  baseUrl = "http://localhost:8080";
+  baseUrl = "http://svilmiwcmsapp01.sky.local/jenkins";
+  // baseUrl = "http://localhost:8080";
   imagePath = this.baseUrl + "/static/f2d3b6db/images/32x32/";
   private credentials: Credentials;
   private crumbData: CrumbResponse;
@@ -90,14 +90,21 @@ export class JenkinsService {
   buildJob(url: string): Observable<void> {
     return this.storageService.getCredentialsObs().pipe(
       concatMap(credentials => this.getJenkinsCrumb(credentials)),
-      concatMap(({ crumb, credentials }) => this.http.post<void>(`${url}build`, {}, this.getAuthHeaders(credentials, crumb))),
+      concatMap(({crumb, credentials}) => this.http.post<void>(`${url}build`, {}, this.getAuthHeaders(credentials, crumb))),
+    );
+  }
+
+  getConsoleLines(url: string): Observable<string[]> {
+    return this.storageService.getCredentialsObs().pipe(
+      concatMap((credentials) => this.http.get(`${url}lastBuild/consoleText`, {...this.getAuthHeaders(credentials), responseType: "text"})),
+      map(consoleOutput => consoleOutput.split("\n"))
     );
   }
 
   private getJenkinsCrumb(credentials: Credentials): Observable<{ crumb: CrumbResponse, credentials: Credentials }> {
     return this.http.get<CrumbResponse>(`${this.baseUrl}/crumbIssuer/api/json`, this.getAuthHeaders(credentials)).pipe(
       map(crumb => {
-        return { crumb, credentials };
+        return {crumb, credentials};
       })
     );
   }
