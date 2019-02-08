@@ -3,7 +3,7 @@ import {JenkinsJob, JenkinsService, JenkinsUser} from "../../services/jenkins.se
 import {Router} from "@angular/router";
 import {IJenkinsJob, IJenkinsView} from "jenkins-api-ts-typings";
 import * as moment from "moment";
-import {IonSegment, AlertController} from "@ionic/angular";
+import {IonSegment, AlertController, NavController} from "@ionic/angular";
 import {tap} from "rxjs/operators";
 
 @Component({
@@ -40,27 +40,27 @@ export class JobsComponent implements OnInit, OnDestroy {
     return this.jenkinsService.loadJobs().pipe(tap(j => this.views = j));
   }
 
-  premutoJob(job: IJenkinsJob) {
-    this.router.navigate(["jobs", job.name]);
+  async premutoJob(job: IJenkinsJob) {
+    await this.router.navigate(["jobs", job.name]);
   }
 
   async premutoLogout() {
     const alert = await this.alertController.create({
-      message: 'Vuoi davvero effettuare il logout?',
+      message: "Vuoi davvero effettuare il logout?",
       buttons: [
         {
           text: "Si",
           handler: async () => {
             await alert.dismiss();
             await this.jenkinsService.logout();
-            this.router.navigate([""]);
-            return false
+            await this.router.navigate([""]);
+            return false;
           }
         },
         "No"
       ]
-    })
-    await alert.present()
+    });
+    await alert.present();
   }
 
   iconForJob(job: IJenkinsJob) {
@@ -100,7 +100,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   setDefaultLogo(event: ErrorEvent) {
-    let imageElement = event.target as HTMLImageElement
+    const imageElement = event.target as HTMLImageElement;
     imageElement.src = "assets/build_logo.jpg";
   }
 
@@ -110,8 +110,9 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   doRefresh(event: { target: { complete: Function } }) {
-    this.jenkinsService.loadJobs().subscribe(j => {
-      this.views = j;
+    this.jenkinsService.loadJobs().subscribe(views => {
+      this.views = views;
+      this.selectedViewJobs = views.filter(v => v.name === this.selectedView.name)[0].jobs.filter(j => !j.name.includes("TEST"));
       event.target.complete();
     }, (e) => {
       console.log(e);

@@ -3,7 +3,7 @@ import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {concatMap, filter, map} from "rxjs/operators";
 import {IJenkinsJob} from "jenkins-api-ts-typings";
-import {AlertController, IonList, IonSegment, LoadingController} from "@ionic/angular";
+import {AlertController, IonList, IonSegment, LoadingController, NavController} from "@ionic/angular";
 import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
@@ -20,7 +20,6 @@ export class ReleaserComponent implements OnInit, OnDestroy {
   @ViewChild("scrollMe", {read: ElementRef}) linesList: ElementRef;
 
   constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController, private loadingController: LoadingController, private ngZone: NgZone) {
-    this.loadJob();
     this.loadAudio();
   }
 
@@ -40,6 +39,7 @@ export class ReleaserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.releasingStatus = "quiet";
+    this.loadJob();
   }
 
   ngOnDestroy(): void {
@@ -48,7 +48,7 @@ export class ReleaserComponent implements OnInit, OnDestroy {
 
   @HostListener("document:keypress", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.code === "13") { // Enter key
+    if (event.code === "Enter") {
       this.premutoRelease();
     }
   }

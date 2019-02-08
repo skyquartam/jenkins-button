@@ -1,7 +1,7 @@
 import {Component, OnInit, HostListener} from "@angular/core";
 import {Router} from "@angular/router";
 import {Credentials, JenkinsService} from "../../services/jenkins.service";
-import {AlertController, LoadingController, ModalController} from "@ionic/angular";
+import {AlertController, LoadingController, ModalController, NavController} from "@ionic/angular";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StorageService} from "../../services/storage.service";
 
@@ -24,9 +24,9 @@ export class LoginComponent implements OnInit {
     this.setCredentials();
   }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener("document:keypress", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.charCode == 13) { // Enter key
+    if (event.code === "Enter") {
       this.premutoLogin();
     }
   }
@@ -40,11 +40,11 @@ export class LoginComponent implements OnInit {
       async (user) => {
         console.log(`Logged in as ${user.fullName}`);
         await loader.dismiss();
-        this.router.navigate(["jobs"]);
+        await this.router.navigate(["jobs"]);
       },
       async (e: HttpErrorResponse) => {
         await loader.dismiss();
-        if (e.status == 401) {
+        if (e.status === 401) {
           this.presentError(`Username o password errate!`);
         } else {
           this.presentError(`Errore sconosciuto durante il login, controlla di essere dentro la VPN Sky`);

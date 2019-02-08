@@ -15,7 +15,7 @@ const routes: Routes = [
     component: JobsComponent
   },
   {
-    path:"jobs/:jobName",
+    path: "jobs/:jobName",
     component: ReleaserComponent
   }
 ];

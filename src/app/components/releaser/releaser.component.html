@@ -14,20 +14,31 @@
     <div class="hero">
       <h1>{{selectedJob?.description}}</h1>
     </div>
-    <div *ngIf="selectedJob" style="text-align:center">
-      <button (click)="premutoRelease()" class="release-button"
-              [ngClass]="{releasing: releasingStatus == 'releasing', released: releasingStatus == 'released'}">
-        <span *ngIf="releasingStatus=='quiet'">Release!</span>
-        <span *ngIf="releasingStatus=='releasing'">Releasing...</span>
-        <span *ngIf="releasingStatus=='released'">Released!</span>
-      </button>
-    </div>
-    <ion-list *ngIf="consoleLines.length > 0"  #scrollMe>
-      <ion-item lines="none" *ngFor="let line of consoleLines">
-        <ion-label text-wrap>
-          {{line}}
-        </ion-label>
-      </ion-item>
-    </ion-list>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-sm>
+          <div *ngIf="selectedJob" style="text-align:center">
+            <button (click)="premutoRelease()" class="release-button"
+                    [ngClass]="{releasing: releasingStatus == 'releasing', released: releasingStatus == 'released'}">
+              <span *ngIf="releasingStatus=='quiet'">Release!</span>
+              <span *ngIf="releasingStatus=='releasing'">Releasing...</span>
+              <span *ngIf="releasingStatus=='released'">Released!</span>
+            </button>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-sm>
+          <ion-list *ngIf="consoleLines.length > 0" #scrollMe>
+            <ion-item lines="none" *ngFor="let line of consoleLines">
+              <ion-label text-wrap>
+                {{line}}
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
   </ion-content>
 </ion-app>
