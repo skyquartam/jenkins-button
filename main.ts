@@ -16,9 +16,6 @@ class ElectronMain {
     this.initAppEvents();
     this.initIpc();
     this.initAutoUpdaterEvents();
-    // this.execFile("")
-    //   .then(data => console.log(data))
-    //   .catch(err => console.log("EXEC_FILE_ERROR:", err));
   }
 
   initApp() {
@@ -27,7 +24,7 @@ class ElectronMain {
   }
 
   initAppEvents() {
-    app.on("ready", () => this.createWindows());
+    app.on("ready", () => this.createMainWindow());
     app.on("window-all-closed", () => this.quitAppOnNonDarwin());
     app.on("activate", () => this.createDefaultWindows());
   }
@@ -72,45 +69,23 @@ class ElectronMain {
     }
   }
 
-  createWindows() {
-    this.createMainWindow();
-    // this.createSecondWindow(); // Creates second window.
-    autoUpdater.checkForUpdates();
-  }
-
   createMainWindow() {
     this.mainWindow = this.createBrowserWindow();
     this.loadFromFile(this.mainWindow);
-    // this.enableDevTools(this.mainWindow);
     this.onWindowClosed(this.mainWindow);
   }
 
-  // createSecondWindow() {
-  //   const secondDisplay = <any>screen.getAllDisplays()[1];
-  //   if (this.checkSecondDisplay(secondDisplay)) {
-  //     this.secondWindow = this.createBrowserWindow(secondDisplay.bounds.x, secondDisplay.bounds.y);
-  //   }
-  //   this.loadFromFile(this.secondWindow, "/second-window");
-  //   this.enableDevTools(this.secondWindow);
-  //   this.onWindowClosed(this.secondWindow);
-  // }
-
-  checkSecondDisplay(secondDisplay: any): boolean {
-    return secondDisplay && secondDisplay !== undefined && secondDisplay !== null;
-  }
 
   createBrowserWindow(): BrowserWindow {
+    const isMac = process.platform === "darwin";
+    const titleBarStyle = isMac ? "hiddenInset" : "default";
     return new BrowserWindow({
       title: this.appTitle,
       width: 570,
       height: 850,
-      fullscreen: false,
-      minimizable: false,
-      maximizable: false,
       autoHideMenuBar: true,
-      resizable: true,
-      closable: true,
-      center: true
+      center: true,
+      titleBarStyle
     });
   }
 

@@ -1,5 +1,7 @@
 $textColor: #1a1a1a;
 
+
+
 ion-button {
   margin: 0 auto;
   height: 150px;
@@ -21,6 +23,8 @@ ion-card-subtitle {
 
 ion-content {
   --ion-background-color: linear-gradient(to right, #d38312, #a83279);
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
 }
 
 ion-item {
@@ -28,6 +32,9 @@ ion-item {
 }
 
 ion-input {
+  -webkit-user-select: initial;
+  -webkit-app-region: no-drag;
+
   --color: $textColor;
 
   input {
