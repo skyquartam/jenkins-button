@@ -5,6 +5,7 @@ import {map, tap, concatMap, filter} from "rxjs/operators";
 import {IJenkinsJob, IJenkinsView} from "jenkins-api-ts-typings";
 import {StorageService} from "./storage.service";
 import {fromPromise} from "rxjs/internal-compatibility";
+import {SonarQubeService} from "./sonar-qube.service";
 
 export interface JenkinsJob {
   name: string;
@@ -41,7 +42,7 @@ export class JenkinsService {
   private credentials: Credentials;
   private crumbData: CrumbResponse;
 
-  constructor(private http: HttpClient, private storageService: StorageService) {
+  constructor(private http: HttpClient, private storageService: StorageService, private sonarService: SonarQubeService) {
   }
 
   async logout() {
@@ -98,6 +99,15 @@ export class JenkinsService {
     return this.storageService.getCredentialsObs().pipe(
       concatMap((credentials) => this.http.get(`${url}lastBuild/consoleText`, {...this.getAuthHeaders(credentials), responseType: "text"})),
       map(consoleOutput => consoleOutput.split("\n"))
+    );
+  }
+
+  getSonarQubeComponent(url: string): Observable<string | null> {
+    return this.storageService.getCredentialsObs().pipe(
+      concatMap((credentials) => this.http.get<Jenkins.SonarQubeQuery.APIResponse>(`${url}lastBuild/api/json?tree=actions[sonarqubeDashboardUrl]`, this.getAuthHeaders(credentials))),
+      map(r => r.actions.filter(a => typeof a["_class"] !== "undefined" && a["_class"] === "hudson.plugins.sonar.action.SonarAnalysisAction")),
+      map(a => a.length > 0 ? a[0].sonarqubeDashboardUrl : null),
+      map(sonarUrl => sonarUrl != null ? sonarUrl.split(`${this.sonarService.baseUrl}/dashboard/index/`)[1] : null)
     );
   }
 

@@ -21,7 +21,6 @@ export class JobsComponent implements OnInit, OnDestroy {
   @ViewChild(IonSegment) segment: IonSegment;
 
   constructor(private jenkinsService: JenkinsService, private router: Router, private ngZone: NgZone, private alertController: AlertController) {
-    const momentDurationFormatSetup = require("moment-duration-format"); // needed to load the library
   }
 
   ngOnInit() {
@@ -73,7 +72,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   formatDuration(duration: number) {
-    return (moment.duration(duration, "milliseconds") as any).format("m [min] s[s]");
+    return (moment.duration(duration, "milliseconds") as any).format("m _ s _");
   }
 
   logoForJob(job: IJenkinsJob) {

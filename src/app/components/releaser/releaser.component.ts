@@ -1,10 +1,12 @@
 import {Component, OnInit, HostListener, OnDestroy, ViewChild, ElementRef, NgZone} from "@angular/core";
 import {JenkinsJob, JenkinsService} from "../../services/jenkins.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {concatMap, filter, map} from "rxjs/operators";
+import {concatMap, filter, map, tap} from "rxjs/operators";
 import {IJenkinsJob} from "jenkins-api-ts-typings";
 import {AlertController, IonList, IonSegment, LoadingController, NavController} from "@ionic/angular";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
+import {SonarQubeService} from "../../services/sonar-qube.service";
+import * as moment from "moment";
+
 
 @Component({
   selector: "app-releaser",
@@ -15,11 +17,15 @@ export class ReleaserComponent implements OnInit, OnDestroy {
   selectedJob: IJenkinsJob;
   private audio: HTMLAudioElement;
   releasingStatus: "quiet" | "releasing" | "released" = "quiet";
+  sonarStatus: "unknown" | "present" | "notPresent";
   consoleLines: string[] = [];
   private consoleTimer: any;
   @ViewChild("scrollMe", {read: ElementRef}) linesList: ElementRef;
+  private sonarComponent: string;
+  private coverage: SonarQube.Coverage.History;
+  private techDebt: SonarQube.Issues.APIResponse;
 
-  constructor(private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController, private loadingController: LoadingController, private ngZone: NgZone) {
+  constructor(private sonarService: SonarQubeService, private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController, private loadingController: LoadingController, private ngZone: NgZone) {
     this.loadAudio();
   }
 
@@ -34,6 +40,7 @@ export class ReleaserComponent implements OnInit, OnDestroy {
     ).subscribe(async job => {
       this.selectedJob = job;
       await loading.dismiss();
+      this.checkForSonar();
     });
   }
 
@@ -51,6 +58,28 @@ export class ReleaserComponent implements OnInit, OnDestroy {
     if (event.code === "Enter") {
       this.premutoRelease();
     }
+  }
+
+  checkForSonar() {
+    this.sonarStatus = "unknown";
+    this.jenkinsService.getSonarQubeComponent(this.selectedJob.url).subscribe(sonarComponent => {
+      if (sonarComponent != null) {
+        this.sonarStatus = "present";
+        this.sonarComponent = sonarComponent;
+        this.loadSonarMetrics();
+      } else {
+        this.sonarStatus = "notPresent";
+      }
+    });
+  }
+
+  loadSonarMetrics() {
+    this.sonarService.getCoverage(this.sonarComponent).subscribe(cov => this.coverage = cov);
+    this.sonarService.getTechDebt(this.sonarComponent).subscribe(techDebt => this.techDebt = techDebt);
+  }
+
+  getFormattedTechDebt() {
+    return (moment.duration(this.techDebt.debtTotal, "minutes") as any).format("d __, h __, m __");
   }
 
   loadAudio() {
