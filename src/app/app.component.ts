@@ -10,7 +10,6 @@ import "moment/min/locales";
 export class AppComponent {
   constructor() {
     const momentDurationFormatSetup = require("moment-duration-format"); // needed to load the library
-    debugger;
     moment.locale("it-IT");
     moment.updateLocale("it", {
       durationLabelsStandard: {

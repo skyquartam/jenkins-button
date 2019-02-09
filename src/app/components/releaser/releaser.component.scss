@@ -57,11 +57,16 @@ h1 {
 }
 
 ion-list {
-  margin: 12px;
+  margin: -12px -2px;
   border-radius: 8px;
-  border: 1px solid dimgray;
+  border: 1px solid #d2d2d2;
   max-height: 40vh;
   overflow-y: scroll;
+}
+
+h2.noConsole {
+  margin: -12px -2px;
+  margin-bottom: 0px;
 }
 
 ion-item {
@@ -79,7 +84,37 @@ ion-item {
 }
 
 ion-card-content {
-    text-align: center;
+  //text-align: center;
 }
+
+img.sonarLogo {
+  height: 50px;
+  margin-left: 15px;
+}
+
+ion-col.sonarCol {
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.fakeCard {
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
+ion-row.fakeCard {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+div.hero {
+  margin: 18px;
+}
+
+ion-card {
+  background: white;
+}
+
 
 
