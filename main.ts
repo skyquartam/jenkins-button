@@ -1,7 +1,9 @@
-import { app, ipcMain, ipcRenderer, BrowserWindow, screen } from "electron";
+import {app, ipcMain, ipcRenderer, BrowserWindow, screen, dialog} from "electron";
 import * as path from "path";
 import * as url from "url";
-import { execFile } from "child_process";
+import {execFile} from "child_process";
+import {autoUpdater} from "electron-updater";
+
 
 class ElectronMain {
   appTitle = "Jenkins Button";
@@ -13,6 +15,7 @@ class ElectronMain {
     this.initApp();
     this.initAppEvents();
     this.initIpc();
+    this.initAutoUpdaterEvents();
     // this.execFile("")
     //   .then(data => console.log(data))
     //   .catch(err => console.log("EXEC_FILE_ERROR:", err));
@@ -27,6 +30,29 @@ class ElectronMain {
     app.on("ready", () => this.createWindows());
     app.on("window-all-closed", () => this.quitAppOnNonDarwin());
     app.on("activate", () => this.createDefaultWindows());
+  }
+
+  initAutoUpdaterEvents() {
+    autoUpdater.checkForUpdates();
+    autoUpdater.addListener("update-available", function (event) {
+      console.log(JSON.stringify(event));
+      dialog.showMessageBox({title: "A new update is ready to install", message: `Version is downloaded and will be automatically installed on Quit`, buttons: ["OK"]});
+    });
+    autoUpdater.addListener("update-downloaded", function (event, releaseNotes, releaseName, releaseDate, updateURL) {
+      autoUpdater.quitAndInstall();
+    });
+    autoUpdater.addListener("error", function (error) {
+      dialog.showMessageBox({title: "Error Happened", message: error, buttons: ["OK"]});
+    });
+    autoUpdater.addListener("checking-for-update", function (event) {
+      dialog.showMessageBox({title: "Checking for update", message: `Checking for updates...`, buttons: ["OK"]});
+    });
+    autoUpdater.addListener("update-not-available", function (event) {
+      dialog.showMessageBox({title: "No update available", message: `No updates available!`, buttons: ["OK"]});
+    });
+    autoUpdater.on("error", (error) => {
+      dialog.showErrorBox("Error: ", error == null ? "unknown" : (error.stack || error).toString());
+    });
   }
 
   initIpc() {
@@ -49,6 +75,7 @@ class ElectronMain {
   createWindows() {
     this.createMainWindow();
     // this.createSecondWindow(); // Creates second window.
+    autoUpdater.checkForUpdates();
   }
 
   createMainWindow() {

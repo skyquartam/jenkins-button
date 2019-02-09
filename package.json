@@ -1,6 +1,6 @@
 {
   "name": "jenkins-button",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "main": "main.js",
   "author": "Marcello Quarta",
   "description": "A Jenkins Release Button",
@@ -19,7 +19,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "node version.js && electron-builder install-app-deps",
     "electron:start": "npm-run-all -p postinstall ng:clean ng:build electron:serve",
     "ng:clean": "rimraf dist && rimraf main.js",
     "electron:serve": "wait-on ./dist/electron-angular/index.html && npm run electron:watch",
@@ -30,6 +30,7 @@
     "electron:watch": "concurrently --kill-others \"npm run electron:tsc \"  \"npm run electron:run\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
+    "release": "build",
     "dist:docker": "docker run --rm -ti --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') --env ELECTRON_CACHE=\"/root/.cache/electron\"  --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\"  -v ${PWD}:/project  -v ${PWD##*/}-node-modules:/project/node_modules  -v ~/.cache/electron:/root/.cache/electron  -v ~/.cache/electron-builder:/root/.cache/electron-builder  electronuserland/builder:wine"
   },
   "build": {
@@ -86,6 +87,8 @@
     "@ionic/angular": "^4.0.0",
     "@ionic/storage": "^2.2.0",
     "core-js": "^2.5.4",
+    "electron-updater": "^4.0.6",
+    "git-describe": "^4.0.3",
     "jenkins-api": "^0.3.1",
     "jenkins-api-ts-typings": "^0.8.7",
     "moment": "^2.24.0",

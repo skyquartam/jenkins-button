@@ -4,6 +4,8 @@ import {Credentials, JenkinsService} from "../../services/jenkins.service";
 import {AlertController, LoadingController, ModalController, NavController} from "@ionic/angular";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StorageService} from "../../services/storage.service";
+import {VERSION} from "../../../environments/version";
+
 
 @Component({
   selector: "app-login",
@@ -11,6 +13,9 @@ import {StorageService} from "../../services/storage.service";
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
+
+  currentVersionInfo = VERSION;
+
   credentials: Credentials = {
     username: "",
     password: ""
