@@ -63,14 +63,6 @@ export class ReleaserComponent implements OnInit, OnDestroy {
   checkForSonar() {
     this.sonarStatus = "unknown";
     this.jenkinsService.getSonarQubeComponent(this.selectedJob.url).subscribe(sonarComponent => {
-      this.jenkinsService.getConsoleLines(this.selectedJob.url).subscribe(lines => {
-        this.consoleLines = lines;
-        setTimeout(() => {
-          this.ngZone.run(() => {
-            this.linesList.nativeElement.scrollTop = this.linesList.nativeElement.scrollHeight;
-          });
-        }, 100);
-      }); // <<<<<<<<<<<<<<<<<<<<<< DELETE ME <<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       if (sonarComponent != null) {
         this.sonarStatus = "present";
         this.sonarComponent = sonarComponent;
