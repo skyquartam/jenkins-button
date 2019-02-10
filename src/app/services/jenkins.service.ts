@@ -102,12 +102,9 @@ export class JenkinsService {
     );
   }
 
-  getSonarQubeComponent(url: string): Observable<string | null> {
+  getSonarQubeComponent(url: string): Observable<Jenkins.LastBuildQuery.APIResponse> {
     return this.storageService.getCredentialsObs().pipe(
-      concatMap((credentials) => this.http.get<Jenkins.SonarQubeQuery.APIResponse>(`${url}lastBuild/api/json?tree=actions[sonarqubeDashboardUrl]`, this.getAuthHeaders(credentials))),
-      map(r => r.actions.filter(a => typeof a["_class"] !== "undefined" && a["_class"] === "hudson.plugins.sonar.action.SonarAnalysisAction")),
-      map(a => a.length > 0 ? a[0].sonarqubeDashboardUrl : null),
-      map(sonarUrl => sonarUrl != null ? sonarUrl.split(`${this.sonarService.baseUrl}/dashboard/index/`)[1] : null)
+      concatMap((credentials) => this.http.get<Jenkins.LastBuildQuery.APIResponse>(`${url}lastBuild/api/json?tree=actions[sonarqubeDashboardUrl],changeSet[items[*]]`, this.getAuthHeaders(credentials))),
     );
   }
 

@@ -58,3 +58,9 @@ img {
   height: 180px;
   object-fit: contain;
 }
+
+span, ion-card-title {
+    background: linear-gradient(to right, #d38312, #a83279);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -1,9 +1,11 @@
-import {app, ipcMain, ipcRenderer, BrowserWindow, screen, dialog} from "electron";
+import {app, ipcMain, ipcRenderer, BrowserWindow, screen, dialog, Menu} from "electron";
 import * as path from "path";
 import * as url from "url";
 import {execFile} from "child_process";
 import {autoUpdater} from "electron-updater";
-
+import {join} from "path";
+import openAboutWindow from "about-window";
+import * as isDev from "electron-is-dev";
 
 class ElectronMain {
   appTitle = "Jenkins Button";
@@ -73,6 +75,9 @@ class ElectronMain {
     this.mainWindow = this.createBrowserWindow();
     this.loadFromFile(this.mainWindow);
     this.onWindowClosed(this.mainWindow);
+    if (!isDev) {
+      this.createMenu();
+    }
   }
 
 
@@ -85,7 +90,8 @@ class ElectronMain {
       height: 850,
       autoHideMenuBar: true,
       center: true,
-      titleBarStyle
+      titleBarStyle,
+      // backgroundColor: "#d38312"
     });
   }
 
@@ -152,6 +158,25 @@ class ElectronMain {
       });
     }
     return Promise.reject("No path provided!");
+  }
+
+  private createMenu() {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: "Example",
+        submenu: [
+          {
+            label: `About ${this.appTitle}`,
+            click: () =>
+              openAboutWindow({
+                icon_path: join(__dirname, "buildResources", "icon.png"),
+                package_json_dir: __dirname
+              }),
+          },
+        ],
+      },
+    ]);
+    Menu.setApplicationMenu(menu);
   }
 }
 

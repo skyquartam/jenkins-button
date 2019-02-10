@@ -24,6 +24,7 @@ export class ReleaserComponent implements OnInit, OnDestroy {
   private sonarComponent: string;
   private coverage: SonarQube.Coverage.History;
   private techDebt: SonarQube.Issues.APIResponse;
+  private lastBuildCommit: Jenkins.LastBuildQuery.Item;
 
   constructor(private sonarService: SonarQubeService, private activatedRoute: ActivatedRoute, private jenkinsService: JenkinsService, private router: Router, private alertController: AlertController, private loadingController: LoadingController, private ngZone: NgZone) {
     this.loadAudio();
@@ -62,15 +63,20 @@ export class ReleaserComponent implements OnInit, OnDestroy {
 
   checkForSonar() {
     this.sonarStatus = "unknown";
-    this.jenkinsService.getSonarQubeComponent(this.selectedJob.url).subscribe(sonarComponent => {
-      if (sonarComponent != null) {
-        this.sonarStatus = "present";
-        this.sonarComponent = sonarComponent;
-        this.loadSonarMetrics();
-      } else {
-        this.sonarStatus = "notPresent";
-      }
-    });
+    this.jenkinsService.getSonarQubeComponent(this.selectedJob.url).pipe(
+      tap(r => this.lastBuildCommit = r.changeSet.items[0]),
+      map(r => r.actions.filter(a => typeof a["_class"] !== "undefined" && a["_class"] === "hudson.plugins.sonar.action.SonarAnalysisAction")),
+      map(a => a.length > 0 ? a[0].sonarqubeDashboardUrl : null),
+      map(sonarUrl => sonarUrl != null ? sonarUrl.split(`${this.sonarService.baseUrl}/dashboard/index/`)[1] : null)
+    ).subscribe(sonarComponent => {
+        if (sonarComponent != null) {
+          this.sonarStatus = "present";
+          this.sonarComponent = sonarComponent;
+          this.loadSonarMetrics();
+        } else {
+          this.sonarStatus = "notPresent";
+        }
+      });
   }
 
   loadSonarMetrics() {
