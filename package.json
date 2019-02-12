@@ -1,6 +1,6 @@
 {
   "name": "jenkins-button",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "main": "main.js",
   "author": "Marcello Quarta",
   "description": "A Jenkins Release Button",
@@ -86,7 +86,9 @@
     "@angular/material": "^7.1.1",
     "@ionic/angular": "^4.0.0",
     "@ionic/storage": "^2.2.0",
+    "about-window": "^1.12.1",
     "core-js": "^2.5.4",
+    "electron-is-dev": "^1.0.1",
     "electron-updater": "^4.0.6",
     "git-describe": "^4.0.3",
     "jenkins-api": "^0.3.1",
