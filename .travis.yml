@@ -6,4 +6,4 @@ os: osx
 before_script:
   - npm install rimraf -g
 script:
-  - npm release
+  - npm run release
