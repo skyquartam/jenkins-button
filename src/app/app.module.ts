@@ -18,9 +18,11 @@ import {FormsModule} from "@angular/forms";
 import {IonicStorageModule} from "@ionic/storage";
 import {StorageService} from "./services/storage.service";
 import {ScrollingModule} from "@angular/cdk/scrolling";
+import {NgxElectronModule} from "ngx-electron";
+import {UpdaterComponent} from "./components/updater/updater.component";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, JobsComponent, ReleaserComponent],
+  declarations: [AppComponent, LoginComponent, JobsComponent, ReleaserComponent, UpdaterComponent],
   imports: [
     AppRoutingModule,
     HttpClientModule,
@@ -29,10 +31,14 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    FormsModule
+    FormsModule,
+    NgxElectronModule
   ],
   providers: [ElectronService, JenkinsService, StorageService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    UpdaterComponent
+  ]
 })
 export class AppModule {
 }

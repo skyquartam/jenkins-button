@@ -42,9 +42,11 @@ class ElectronMain {
       owner: "skyquartam",
       private: false
     });
+    const self = this;
     autoUpdater.checkForUpdates();
     autoUpdater.addListener("error", function (error) {
-      dialog.showMessageBox({title: "Error Happened", message: error, buttons: ["OK"]});
+      // dialog.showMessageBox({title: "Error Happened", message: error.toString(), buttons: ["OK"]});
+      self.mainWindow.webContents.send("update-error", error);
     });
     autoUpdater.addListener("checking-for-update", function (event) {
       dialog.showMessageBox({title: "Checking for update", message: `Checking for updates...`, buttons: ["OK"]});
@@ -70,30 +72,18 @@ class ElectronMain {
   }
 
   initProgressEvent() {
+    const self = this;
     autoUpdater.addListener("update-available", function (event) {
       dialog.showMessageBox({title: "A new update is ready to install", message: `A new shiny version (${event.version}) is available, click "Ok" to download `, buttons: ["OK"]});
+      self.mainWindow.webContents.send("update-available", event);
     });
     autoUpdater.signals.progress(progressInfo => {
       let log_message = "Download speed: " + this.formatBytes(progressInfo.bytesPerSecond);
       log_message = log_message + " - Downloaded " + progressInfo.percent.toFixed(2) + "%";
       log_message = log_message + " (" + this.formatBytes(progressInfo.transferred) + "/" + this.formatBytes(progressInfo.total) + ")";
       console.log(log_message);
-      if (!this.progressBar) {
-        this.progressBar = new ProgressBar({
-          text: "Downloading update...",
-          detail: "Please wait...",
-          indeterminate: false,
-          browserWindow: {
-            parent: this.mainWindow
-          }
-        });
-        this.progressBar.on("completed", () => {
-          this.progressBar.detail = "Task completed. Exiting...";
-          this.progressBar = null;
-        });
-      }
-      this.progressBar.detail = log_message;
-      this.progressBar.value = progressInfo.percent;
+      this.mainWindow.setProgressBar(progressInfo.percent / 100);
+      this.mainWindow.webContents.send("update-progress", progressInfo);
     });
   }
 
@@ -131,6 +121,8 @@ class ElectronMain {
     this.onWindowClosed(this.mainWindow);
     if (!isDev) {
       this.createMenu();
+    } else {
+      this.enableDevTools(this.mainWindow);
     }
   }
 

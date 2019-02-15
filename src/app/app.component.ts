@@ -1,16 +1,19 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import * as moment from "moment";
 import "moment/min/locales";
 import ipcRenderer = Electron.ipcRenderer;
 import {ProgressInfo} from "./models/electron-models";
+import {IpcService} from "./services/ipc.service";
+import {ModalController} from "@ionic/angular";
+import {UpdaterComponent} from "./components/updater/updater.component";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {
-  constructor() {
+export class AppComponent implements OnInit {
+  constructor(private readonly ipc: IpcService, private readonly modalCtrl: ModalController) {
     const momentDurationFormatSetup = require("moment-duration-format"); // needed to load the library
     moment.locale("it-IT");
     moment.updateLocale("it", {
@@ -68,5 +71,17 @@ export class AppComponent {
         return token + token;
       }
     });
+  }
+
+  ngOnInit() {
+    this.ipc.on("update-available", this.showUpdaterModal.bind(this));
+  }
+
+  private async showUpdaterModal() {
+    const modal = await this.modalCtrl.create({
+      component: UpdaterComponent,
+      backdropDismiss: false
+    });
+    await modal.present();
   }
 }

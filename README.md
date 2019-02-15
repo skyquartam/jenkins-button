@@ -1,4 +1,4 @@
-# Jenkins Button
+# Jenkins Button [![Build Status](https://travis-ci.com/skyquartam/jenkins-button.svg?branch=master)](https://travis-ci.com/skyquartam/jenkins-button)
 
 ## Getting Started
 
