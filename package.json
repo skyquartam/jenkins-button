@@ -1,6 +1,6 @@
 {
   "name": "jenkins-button",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "main.js",
   "author": "Marcello Quarta",
   "description": "A Jenkins Release Button",
