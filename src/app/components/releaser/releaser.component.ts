@@ -6,6 +6,7 @@ import {IJenkinsJob} from "jenkins-api-ts-typings";
 import {AlertController, IonList, IonSegment, LoadingController, NavController} from "@ionic/angular";
 import {SonarQubeService} from "../../services/sonar-qube.service";
 import * as moment from "moment";
+import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 
 
 @Component({
@@ -20,7 +21,8 @@ export class ReleaserComponent implements OnInit, OnDestroy {
   sonarStatus: "unknown" | "present" | "notPresent";
   consoleLines: string[] = [];
   private consoleTimer: any;
-  @ViewChild("scrollMe", {read: ElementRef}) linesList: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport)
+  public virtualScrollViewport?: CdkVirtualScrollViewport;
   private sonarComponent: string;
   private coverage: SonarQube.Coverage.History;
   private techDebt: SonarQube.Issues.APIResponse;
@@ -69,14 +71,14 @@ export class ReleaserComponent implements OnInit, OnDestroy {
       map(a => a.length > 0 ? a[0].sonarqubeDashboardUrl : null),
       map(sonarUrl => sonarUrl != null ? sonarUrl.split(`${this.sonarService.baseUrl}/dashboard/index/`)[1] : null)
     ).subscribe(sonarComponent => {
-        if (sonarComponent != null) {
-          this.sonarStatus = "present";
-          this.sonarComponent = sonarComponent;
-          this.loadSonarMetrics();
-        } else {
-          this.sonarStatus = "notPresent";
-        }
-      });
+      if (sonarComponent != null) {
+        this.sonarStatus = "present";
+        this.sonarComponent = sonarComponent;
+        this.loadSonarMetrics();
+      } else {
+        this.sonarStatus = "notPresent";
+      }
+    });
   }
 
   loadSonarMetrics() {
@@ -124,7 +126,7 @@ export class ReleaserComponent implements OnInit, OnDestroy {
         this.consoleLines = lines;
         setTimeout(() => {
           this.ngZone.run(() => {
-            this.linesList.nativeElement.scrollTop = this.linesList.nativeElement.scrollHeight;
+            this.virtualScrollViewport.scrollTo({bottom: 0});
           });
         }, 100);
       });

@@ -56,13 +56,14 @@ h1 {
   padding-top: 18px;
 }
 
-ion-list {
-  margin: -12px -2px;
-  border-radius: 8px;
-  border: 1px solid #d2d2d2;
-  max-height: 36vw;
-  max-width: 88vw;
-  overflow-y: scroll;
+
+li.consoleLine {
+  height: 20px; overflow: hidden;
+}
+
+ul.consoleList {
+  padding: 0;
+  margin: 0;
 }
 
 h2.noConsole {

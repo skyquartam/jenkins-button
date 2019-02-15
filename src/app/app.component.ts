@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
 import * as moment from "moment";
 import "moment/min/locales";
+import ipcRenderer = Electron.ipcRenderer;
+import {ProgressInfo} from "./models/electron-models";
 
 @Component({
   selector: "app-root",

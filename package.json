@@ -1,6 +1,6 @@
 {
   "name": "jenkins-button",
-  "version": "0.0.6",
+  "version": "0.0.0",
   "main": "main.js",
   "author": "Marcello Quarta",
   "description": "A Jenkins Release Button",
@@ -30,7 +30,7 @@
     "electron:watch": "concurrently --kill-others \"npm run electron:tsc \"  \"npm run electron:run\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "build",
+    "release": "node version.js && build",
     "dist:docker": "docker run --rm -ti --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') --env ELECTRON_CACHE=\"/root/.cache/electron\"  --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\"  -v ${PWD}:/project  -v ${PWD##*/}-node-modules:/project/node_modules  -v ~/.cache/electron:/root/.cache/electron  -v ~/.cache/electron-builder:/root/.cache/electron-builder  electronuserland/builder:wine"
   },
   "build": {
@@ -82,13 +82,14 @@
   "dependencies": {
     "@angular-devkit/schematics-cli": "^0.12.3",
     "@angular/animations": "7.2.1",
-    "@angular/cdk": "^7.1.1",
+    "@angular/cdk": "^7.3.2",
     "@angular/material": "^7.1.1",
     "@ionic/angular": "^4.0.0",
     "@ionic/storage": "^2.2.0",
     "about-window": "^1.12.1",
     "core-js": "^2.5.4",
     "electron-is-dev": "^1.0.1",
+    "electron-progressbar": "^1.2.0",
     "electron-updater": "^4.0.6",
     "git-describe": "^4.0.3",
     "jenkins-api": "^0.3.1",

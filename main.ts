@@ -6,12 +6,14 @@ import {autoUpdater} from "electron-updater";
 import {join} from "path";
 import openAboutWindow from "about-window";
 import * as isDev from "electron-is-dev";
+import * as ProgressBar from "electron-progressbar/source";
 
 class ElectronMain {
   appTitle = "Jenkins Button";
   args: any;
   mainWindow: BrowserWindow;
   secondWindow: BrowserWindow;
+  progressBar: ProgressBar;
 
   constructor() {
     this.initApp();
@@ -32,26 +34,78 @@ class ElectronMain {
   }
 
   initAutoUpdaterEvents() {
+    autoUpdater.autoDownload = true;
+    autoUpdater.autoInstallOnAppQuit = true;
+    autoUpdater.setFeedURL({
+      provider: "github",
+      repo: "jenkins-button",
+      owner: "skyquartam",
+      private: false
+    });
     autoUpdater.checkForUpdates();
-    autoUpdater.addListener("update-available", function (event) {
-      console.log(JSON.stringify(event));
-      dialog.showMessageBox({title: "A new update is ready to install", message: `Version is downloaded and will be automatically installed on Quit`, buttons: ["OK"]});
-    });
-    autoUpdater.addListener("update-downloaded", function (event, releaseNotes, releaseName, releaseDate, updateURL) {
-      autoUpdater.quitAndInstall();
-    });
     autoUpdater.addListener("error", function (error) {
       dialog.showMessageBox({title: "Error Happened", message: error, buttons: ["OK"]});
     });
     autoUpdater.addListener("checking-for-update", function (event) {
       dialog.showMessageBox({title: "Checking for update", message: `Checking for updates...`, buttons: ["OK"]});
     });
-    autoUpdater.addListener("update-not-available", function (event) {
-      dialog.showMessageBox({title: "No update available", message: `No updates available!`, buttons: ["OK"]});
-    });
     autoUpdater.on("error", (error) => {
       dialog.showErrorBox("Error: ", error == null ? "unknown" : (error.stack || error).toString());
     });
+    autoUpdater.signals.updateDownloaded(updateInfo => {
+      const buttonIndex = dialog.showMessageBox(
+        {
+          title: "Update downloaded",
+          message: `Version ${updateInfo.version} is downloaded and will be automatically installed on Quit`,
+          buttons: [
+            "Installa ora e riavvia",
+            "Installa al prossimo riavvio"
+          ]
+        });
+      if (buttonIndex === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+    this.initProgressEvent();
+  }
+
+  initProgressEvent() {
+    autoUpdater.addListener("update-available", function (event) {
+      dialog.showMessageBox({title: "A new update is ready to install", message: `A new shiny version (${event.version}) is available, click "Ok" to download `, buttons: ["OK"]});
+    });
+    autoUpdater.signals.progress(progressInfo => {
+      let log_message = "Download speed: " + this.formatBytes(progressInfo.bytesPerSecond);
+      log_message = log_message + " - Downloaded " + progressInfo.percent.toFixed(2) + "%";
+      log_message = log_message + " (" + this.formatBytes(progressInfo.transferred) + "/" + this.formatBytes(progressInfo.total) + ")";
+      console.log(log_message);
+      if (!this.progressBar) {
+        this.progressBar = new ProgressBar({
+          text: "Downloading update...",
+          detail: "Please wait...",
+          indeterminate: false,
+          browserWindow: {
+            parent: this.mainWindow
+          }
+        });
+        this.progressBar.on("completed", () => {
+          this.progressBar.detail = "Task completed. Exiting...";
+          this.progressBar = null;
+        });
+      }
+      this.progressBar.detail = log_message;
+      this.progressBar.value = progressInfo.percent;
+    });
+  }
+
+  formatBytes(bytes: number, decimals?: number) {
+    if (bytes === 0) {
+      return "0 Bytes";
+    }
+    const k = 1024,
+      dm = decimals <= 0 ? 0 : decimals || 2,
+      sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+      i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
 
   initIpc() {

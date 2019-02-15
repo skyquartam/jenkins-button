@@ -69,14 +69,37 @@
               </ion-card-title>
             </ion-card-content>
             <ion-card-content>
-              <ion-list *ngIf="consoleLines.length > 0" #scrollMe>
-                <ion-item lines="none" *ngFor="let line of consoleLines">
-                  <ion-label text-wrap>
-                    {{line}}
-                  </ion-label>
-                </ion-item>
-              </ion-list>
-            <h2 class="noConsole" *ngIf="consoleLines.length == 0">Avvia la build per visualizzare l'output</h2>
+
+              <ul class="consoleList" #scrollMe>
+                <cdk-virtual-scroll-viewport style="height: 500px" itemSize="20">
+                  <ng-container *cdkVirtualFor="let line of consoleLines">
+                    <li class="consoleLine"> {{line}} </li>
+                  </ng-container>
+                </cdk-virtual-scroll-viewport>
+              </ul>
+
+
+              <!--<ion-list *ngIf="consoleLines.length > 0" #scrollMe>-->
+                <!--<cdk-virtual-scroll-viewport style="height: 400px" itemSize="24">-->
+                  <!--<ng-container *cdkVirtualFor="let line of consoleLines">-->
+                    <!--<ion-label>-->
+                      <!--{{line}}-->
+                    <!--</ion-label>-->
+                  <!--</ng-container>-->
+                <!--</cdk-virtual-scroll-viewport>-->
+              <!--</ion-list>-->
+
+
+              <!--<ion-list *ngIf="consoleLines.length > 0" #scrollMe>-->
+              <!--<ion-item lines="none" *ngFor="let line of consoleLines">-->
+              <!--<ion-label text-wrap>-->
+              <!--{{line}}-->
+              <!--</ion-label>-->
+              <!--</ion-item>-->
+              <!--</ion-list>-->
+
+
+              <h2 class="noConsole" *ngIf="consoleLines.length == 0">Avvia la build per visualizzare l'output</h2>
             </ion-card-content>
           </ion-card>
         </ion-col>
