@@ -1,0 +1,71 @@
+$textColor: #1a1a1a;
+
+
+
+ion-button {
+  margin: 0 auto;
+  height: 150px;
+  --background: transparent;
+  --box-shadow: none;
+  font-size: 2em;
+  color: #545454;
+}
+
+ion-card-title {
+  text-align: center;
+  color: $textColor;
+  font-size: 2.4em;
+}
+
+ion-card-subtitle {
+  text-align: center;
+}
+
+ion-content {
+  --ion-background-color: linear-gradient(to right, #d38312, #a83279);
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
+
+ion-item {
+  --background: transparent;
+}
+
+ion-input {
+  -webkit-user-select: initial;
+  -webkit-app-region: no-drag;
+
+  --color: $textColor;
+
+  input {
+    border-color: $textColor;
+  }
+}
+
+ion-label {
+  --color: $textColor !important;
+}
+
+ion-card {
+  max-width: 80%;
+  margin: 140px auto;
+  background-color: #eaeaea;
+}
+
+img {
+  margin-top: 70px;
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+}
+
+span, ion-card-title {
+    background: linear-gradient(to right, #d38312, #a83279);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+ion-progress-bar {
+  margin-top: 20px;
+  --progress-background: linear-gradient(to right, #d38312, #a83279);
+}
