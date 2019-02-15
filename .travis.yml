@@ -2,5 +2,8 @@ language: node_js
 node_js:
   - "stable"
 cache: npm
+os: osx
+before_script:
+  - npm install rimraf -g
 script:
   - npm release
